@@ -7,31 +7,22 @@
 #' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10.
 #' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw you samples. Default = 100,000. Accepts any positive integer.
 #' @param iterations How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any positive integer.
-#' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Technically accepts any number, but you should probably choose a number larger than 0 and smaller than or equal to 0.05.
+#' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.
 #' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
 #' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100.
 #' @param b1...b10 The effect size, expressed as correlation coefficients (r), for each predictor in your model. You should specify a number of "b"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supple values for b1, b2, b3, and b4. You should always specify these in order, beginning with b1, and not skipping any. You must specify effect sizes for at least b1 and b2, neither of which has a default value. Default values for all other bs are 0. Leave these defaults in place for any unused bs. Accepts any number between -1 and 1.
-#' @param iv1iv2_cov...iv9iv10_cov The covariance, expressed as correlation coefficients (r), between predictors. Specifying covariances between predictors is optional unless your predictors, together, account for more than 100% of the variance in your DV, in which case you must specify covariances between your predictors to make that possible. Default = 0. Accepts any number between -1 and 1.
+#' @param iv1iv2_cov...iv9iv10_cov The covariance, expressed as correlation coefficients (r), between each set of predictors. Specifying covariances between predictors is optional unless your predictors, together, account for more than 100% of the variance in your DV, in which case you must specify covariances between your predictors to make that possible. Default = 0. Accepts any number between -1 and 1.
 #'
-#' @value A dataframe containing a power estiamtes, expressed as decimals, for each of the effects individually, and for all the effects simultaneously (labelled "total_power").
+#' @value A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously (labelled "total_power").
 #'
 #' @references Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
 #'
 #' @examples
 #' # A basic example, leaving all the defaults in place.
-#' The following code estimates power to simultaneously detect
-#' effects of r = .20 and r = .15 with 150 observations.
 #'
 #' simusim(n = 150, b1 = .2, b2 = .15)
 #'
 #' # Another example, customizing additional parameters.
-#' Here, we test power to simultaneously detect three effects
-#' (r = .70, r = .60, and r = .50). Because these add up to
-#' more than 100% of the variance in the DV (.7^2 + .6^2 + .5^2 > 1),
-#' we specified a covariance between iv1 and iv2 large enough to
-#' reduce the total variance accounted for in the DV to below 1.
-#' We additionally simulated a larger population, reduced our
-#' alpha level to .01, and set a custom seed.
 #'
 #' simusim(n = 300, b1 = .7, b2 = .6, b3 = .5, iv1iv2_cov = .5,
 #'      popsize = 1000000, alpha = .01, seed = 12345)
@@ -58,6 +49,11 @@ simusim <- function(predictors = 2, popsize = 100000, iterations = 10000, alpha 
 
   if(specified_params["0"] != (11 - predictors)) {
     stop("You have specified the wrong number of predictors. Make sure to set the predictors argument to equal the number of predictors for which you have specified effect sizes. Additionally, ensure to specify effect sizes for preductors in order, beginning with b1, and not skipping any along the way. ")
+  }
+
+  # Throw a warning if the user has left n blank #
+  if(missing(n)) {
+    stop("Missing value for n. Please specify a sample size for your tests.")
   }
 
   # Simulate the population #
