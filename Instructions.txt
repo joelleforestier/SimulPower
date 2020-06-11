@@ -1,6 +1,6 @@
-SimuSim: Simultaneous Power Analysis for a Set of Statistical Tests Installation Instructions
+SimuSim: Simultaneous Power Analysis for a Set of Statistical Tests Instructions
 
-To install this package, copy-and-paste the text, below, into R.
+TO INSTALL THIS PACKAGE:
 
 # Install the devtools package, if you don't already have it installed, which allows you to install packages from GitHub.
 install.packages("devtools")
@@ -13,3 +13,7 @@ install_github("joelleforestier/SimuSim")
 
 # Load SimuSim
 library(SimuSim)
+
+TO CITE THIS PACKAGE:
+
+When using this function, please cite as: Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
