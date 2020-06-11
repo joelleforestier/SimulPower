@@ -24,7 +24,7 @@ simusim(n = NULL, b1 = NULL, b2 = NULL)
 \item{iv1iv2_cov...iv9iv10_cov}{The covariance, expressed as correlation coefficients (r), between each set of predictors. Specifying covariances between predictors is optional unless your predictors, together, account for more than 100\% of the variance in your DV, in which case you must specify covariances between your predictors to make that possible. Default = 0. Accepts any number between -1 and 1.}
 }
 \description{
-Simulate power to simultaneously detect significant effects for a set of staitsitcal tests. This function simulates data based on a correlation matrix imposed using the SimMultiCorrData package (Fialkowski, A. C., 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978).
+Simulate power to simultaneously detect significant effects for a set of statistical tests in a single multivariate model. This function simulates data based on a correlation matrix imposed using the SimMultiCorrData package (Fialkowski, A. C., 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
 }
 \examples{
 # A basic example, leaving all the defaults in place.
@@ -38,5 +38,9 @@ simusim(n = 300, b1 = .7, b2 = .6, b3 = .5, iv1iv2_cov = .5,
 
 }
 \references{
+Fialkowski, A. C. (2018). SimMultiCorrData: Simulation of correlated data with multiple variable types. Comprehensive R Archive Network (CRAN).
+
+Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psychometrika, 43, 521-532.
+
 Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
 }

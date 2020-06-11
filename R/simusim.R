@@ -1,6 +1,6 @@
 #' Simulate simultaneous power for multiple tests
 #'
-#' Simulate power to simultaneously detect significant effects for a set of staitsitcal tests. This function simulates data based on a correlation matrix imposed using the SimMultiCorrData package (Fialkowski, A. C., 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978).
+#' Simulate power to simultaneously detect significant effects for a set of statistical tests in a single multivariate model. This function simulates data based on a correlation matrix imposed using the SimMultiCorrData package (Fialkowski, A. C., 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
 #'
 #' @usage simusim(n = NULL, b1 = NULL, b2 = NULL)
 #'
@@ -15,7 +15,11 @@
 #'
 #' @value A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously (labelled "total_power").
 #'
-#' @references Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
+#' @references Fialkowski, A. C. (2018). SimMultiCorrData: Simulation of correlated data with multiple variable types. Comprehensive R Archive Network (CRAN).
+#'
+#' Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psychometrika, 43, 521-532.
+#'
+#' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
 #'
 #' @examples
 #' # A basic example, leaving all the defaults in place.
