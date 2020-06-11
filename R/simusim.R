@@ -189,7 +189,7 @@ simusim <- function(predictors = 2, popsize = 100000, iterations = 10000, alpha 
     b9_power <- mean(result$b9_result)
   }
   if (predictors > 9) {
-    b410power <- mean(result$b10_result)
+    b10_power <- mean(result$b10_result)
   }
 
   # Summarize results
