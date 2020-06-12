@@ -60,6 +60,11 @@ simusim <- function(predictors = 2, popsize = 100000, iterations = 10000, alpha 
     stop("Missing value for n. Please specify a sample size for your tests.")
   }
 
+  # Throw a warning if the sample size is greater than or equal to the population size #
+  if(n >= popsize) {
+    stop("Your sample size is greater than or equal to your population size. Please increase popsize or decrease n.")
+  }
+
   # Simulate the population #
   cortable <- matrix(c(1, iv1iv2_cov, iv1iv3_cov, iv1iv4_cov, iv1iv5_cov, iv1iv6_cov, iv1iv7_cov, iv1iv8_cov, iv1iv9_cov, iv1iv10_cov, b1,
                        iv1iv2_cov, 1, iv2iv3_cov, iv2iv4_cov, iv2iv5_cov, iv2iv6_cov, iv2iv7_cov, iv2iv8_cov, iv2iv9_cov, iv2iv10_cov, b2,
