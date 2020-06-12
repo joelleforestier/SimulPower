@@ -9,7 +9,7 @@ simusim(n = NULL, b1 = NULL, b2 = NULL)
 \arguments{
 \item{predictors}{How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10.}
 
-\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw you samples. Default = 100,000. Accepts any positive integer.}
+\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive integer.}
 
 \item{iterations}{How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any positive integer.}
 
@@ -33,8 +33,8 @@ simusim(n = 150, b1 = .2, b2 = .15)
 
 # Another example, customizing additional parameters.
 
-simusim(n = 300, b1 = .7, b2 = .6, b3 = .5, iv1iv2_cov = .5,
-     popsize = 1000000, alpha = .01, seed = 12345)
+simusim(n = 300, b1 = .7, b2 = .6, b3 = .5, predictors = 3,
+     iv1iv2_cov = .5, popsize = 500000, alpha = .01, seed = 123)
 
 }
 \references{

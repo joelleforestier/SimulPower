@@ -5,7 +5,7 @@
 #' @usage simusim(n = NULL, b1 = NULL, b2 = NULL)
 #'
 #' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10.
-#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw you samples. Default = 100,000. Accepts any positive integer.
+#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive integer.
 #' @param iterations How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any positive integer.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.
 #' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
@@ -28,8 +28,8 @@
 #'
 #' # Another example, customizing additional parameters.
 #'
-#' simusim(n = 300, b1 = .7, b2 = .6, b3 = .5, iv1iv2_cov = .5,
-#'      popsize = 1000000, alpha = .01, seed = 12345)
+#' simusim(n = 300, b1 = .7, b2 = .6, b3 = .5, predictors = 3,
+#'      iv1iv2_cov = .5, popsize = 500000, alpha = .01, seed = 123)
 #'
 #' @export
 
@@ -52,7 +52,7 @@ simusim <- function(predictors = 2, popsize = 100000, iterations = 10000, alpha 
   specified_params <- table(c(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, dummy_beta))
 
   if(specified_params["0"] != (11 - predictors)) {
-    stop("You have specified the wrong number of predictors. Make sure to set the predictors argument to equal the number of predictors for which you have specified effect sizes. Additionally, ensure to specify effect sizes for preductors in order, beginning with b1, and not skipping any along the way. ")
+    stop("You have specified the wrong number of predictors. Make sure to set the predictors argument to equal the number of predictors for which you have specified effect sizes. Additionally, ensure to specify effect sizes for predictors in order, beginning with b1, and not skipping any along the way. ")
   }
 
   # Throw a warning if the user has left n blank #
