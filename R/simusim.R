@@ -4,7 +4,7 @@
 #'
 #' @usage simusim(n = NULL, b1 = NULL, b2 = NULL)
 #'
-#' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10.
+#' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10. Note that this argument is required if you specify values for more that 2 predictors.
 #' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive integer.
 #' @param iterations How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any positive integer.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.
@@ -15,21 +15,26 @@
 #'
 #' @value A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously (labelled "total_power").
 #'
+#' @author Joel Le Forestier (joel.le.forestier@@mail.utoronto.ca)
+#'
+#' @citation When you use this function, please cite the following:
+#'
+#' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
+#'
 #' @references Fialkowski, A. C. (2018). SimMultiCorrData: Simulation of correlated data with multiple variable types. Comprehensive R Archive Network (CRAN).
 #'
 #' Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psychometrika, 43, 521-532.
 #'
 #' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
 #'
-#' @examples
-#' # A basic example, leaving all the defaults in place.
+#' @examples # A basic example, leaving all the defaults in place.
 #'
 #' simusim(n = 150, b1 = .2, b2 = .15)
 #'
 #' # Another example, customizing additional parameters.
 #'
-#' simusim(n = 300, b1 = .7, b2 = .6, b3 = .5, predictors = 3,
-#'      iv1iv2_cov = .5, popsize = 500000, alpha = .01, seed = 123)
+#' simusim(n = 300, b1 = .1, b2 = .2, b3 = .15, predictors = 3,
+#'      iv1iv2_cov = .2, popsize = 500000, alpha = .01, seed = 123)
 #'
 #' @export
 
@@ -78,19 +83,15 @@ simusim <- function(predictors = 2, popsize = 100000, iterations = 10000, alpha 
                        iv1iv10_cov, iv2iv10_cov, iv3iv10_cov, iv4iv10_cov, iv5iv10_cov, iv6iv10_cov, iv7iv10_cov, iv8iv10_cov, iv9iv10_cov, 1, b10,
                        b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, 1), 11, 11)
 
-  sink(file = "sink.txt")
   set.seed(seed)
-  dist <- SimMultiCorrData::rcorrvar(n = popsize,
+  invisible(capture.output(dist <- SimMultiCorrData::rcorrvar(n = popsize,
                    k_cont = 11,
                    method = "Fleishman",
                    means = rep(0, times = 11),
                    vars = rep(1, times = 11),
                    skews = rep(0, times = 11),
                    skurts = rep(0, times = 11),
-                   rho = cortable)
-  dist <- dist$continuous_variables
-  sink(file = NULL)
-  file.remove("sink.txt")
+                   rho = cortable)$continuous_variables))
 
   names(dist) <- c("iv1", "iv2", "iv3", "iv4", "iv5", "iv6", "iv7", "iv8", "iv9", "iv10", "dv")
 
