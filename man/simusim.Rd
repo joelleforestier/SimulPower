@@ -26,6 +26,11 @@ simusim(n = NULL, b1 = NULL, b2 = NULL)
 \description{
 Simulate power to simultaneously detect significant effects for a set of statistical tests in a single multivariate model. This function simulates data based on a correlation matrix imposed using the SimMultiCorrData package (Fialkowski, A. C., 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
 }
+\details{
+When you use this function (and we hope you do!), please cite it as:
+
+Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
+}
 \examples{
 # A basic example, leaving all the defaults in place.
 
@@ -45,5 +50,5 @@ Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psych
 Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
 }
 \author{
-Joel Le Forestier (joel.le.forestier@mail.utoronto.ca)
+Joel Le Forestier (joel.leforestier@mail.utoronto.ca)
 }

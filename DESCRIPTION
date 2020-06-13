@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "joel.leforestier@mail.utoronto.ca",
            comment = c(ORCID = "0000-0003-3330-2171"))
-Description: Perform statistical power analysis simultaneously for a set of statistical hypotheses through simulation. Outputs statistical power to detect each hypothesis independently, as well as to detect each of them simultaneously. 
+Description: Perform statistical power analysis simultaneously for a set of statistical tests through simulation. Outputs statistical power to detect each effect independently, as well as to detect each of them simultaneously. 
 Imports: SimMultiCorrData (>= 0.2.2)
 License: `use_mit_license()`
 Encoding: UTF-8

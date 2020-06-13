@@ -2,6 +2,10 @@
 #'
 #' Simulate power to simultaneously detect significant effects for a set of statistical tests in a single multivariate model. This function simulates data based on a correlation matrix imposed using the SimMultiCorrData package (Fialkowski, A. C., 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
 #'
+#' When you use this function (and we hope you do!), please cite it as:
+#'
+#' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
+#'
 #' @usage simusim(n = NULL, b1 = NULL, b2 = NULL)
 #'
 #' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10. Note that this argument is required if you specify values for more that 2 predictors.
@@ -15,11 +19,7 @@
 #'
 #' @value A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously (labelled "total_power").
 #'
-#' @author Joel Le Forestier (joel.le.forestier@@mail.utoronto.ca)
-#'
-#' @citation When you use this function, please cite the following:
-#'
-#' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
+#' @author Joel Le Forestier (joel.leforestier@@mail.utoronto.ca)
 #'
 #' @references Fialkowski, A. C. (2018). SimMultiCorrData: Simulation of correlated data with multiple variable types. Comprehensive R Archive Network (CRAN).
 #'
