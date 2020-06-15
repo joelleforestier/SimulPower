@@ -17,7 +17,7 @@
 #' @param b1...b10 The effect size, expressed as correlation coefficients (r), for each predictor in your model. You should specify a number of "b"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supple values for b1, b2, b3, and b4. You should always specify these in order, beginning with b1, and not skipping any. You must specify effect sizes for at least b1 and b2, neither of which has a default value. Default values for all other bs are 0. Leave these defaults in place for any unused bs. Accepts any number between -1 and 1.
 #' @param iv1iv2_cov...iv9iv10_cov The covariance, expressed as correlation coefficients (r), between each set of predictors. Specifying covariances between predictors is optional unless your predictors, together, account for more than 100% of the variance in your DV, in which case you must specify covariances between your predictors to make that possible. Default = 0. Accepts any number between -1 and 1.
 #'
-#' @value A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously (labelled "total_power").
+#' @value A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously.
 #'
 #' @author Joel Le Forestier (joel.leforestier@@mail.utoronto.ca)
 #'
@@ -142,37 +142,37 @@ simusim <- function(predictors = 2, popsize = 100000, iterations = 10000, alpha 
   }
 
   # Create variable for calculating simultaneous power #
-  result$total <- FALSE
+  result$simultaneous <- FALSE
 
   if (predictors == 2) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE] <- TRUE
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE] <- TRUE
   } else if (predictors == 3) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE] <- TRUE
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE] <- TRUE
   } else if (predictors == 4) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE] <- TRUE
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE] <- TRUE
   } else if (predictors == 5) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE] <- TRUE
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE] <- TRUE
   } else if (predictors == 6) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
                    result$b6_result == TRUE] <- TRUE
   } else if (predictors == 7) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
                    result$b6_result == TRUE & result$b7_result == TRUE] <- TRUE
   } else if (predictors == 8) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
                    result$b6_result == TRUE & result$b7_result == TRUE & result$b8_result == TRUE] <- TRUE
   } else if (predictors == 9) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
                    result$b6_result == TRUE & result$b7_result == TRUE & result$b8_result == TRUE & result$b9_result == TRUE] <- TRUE
   } else if (predictors == 10) {
-    result$total[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
+    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
                    result$b6_result == TRUE & result$b7_result == TRUE & result$b8_result == TRUE & result$b9_result == TRUE & result$b10_result == TRUE] <- TRUE
   }
 
   result[result == "TRUE"] <- 1
 
   # Calculate power #
-  total_power <- mean(result$total)
+  simultaneous_power <- mean(result$simultaneous)
   b1_power <- mean(result$b1_result)
   b2_power <- mean(result$b2_result)
   if (predictors > 2) {
@@ -203,23 +203,23 @@ simusim <- function(predictors = 2, popsize = 100000, iterations = 10000, alpha 
   # Summarize results
 
   if (predictors == 2) {
-    power <- data.frame(b1_power, b2_power, total_power)
+    power <- data.frame(b1_power, b2_power, simultaneous_power)
   } else if ( predictors == 3) {
-    power <- data.frame(b1_power, b2_power, b3_power, total_power)
+    power <- data.frame(b1_power, b2_power, b3_power, simultaneous_power)
   } else if ( predictors == 4) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, total_power)
+    power <- data.frame(b1_power, b2_power, b3_power, b4_power, simultaneous_power)
   } else if ( predictors == 5) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, total_power)
+    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, simultaneous_power)
   } else if ( predictors == 6) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, total_power)
+    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, simultaneous_power)
   } else if ( predictors == 7) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, total_power)
+    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, simultaneous_power)
   } else if ( predictors == 8) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, total_power)
+    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, simultaneous_power)
   } else if ( predictors == 9) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, b9_power, total_power)
+    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, b9_power, simultaneous_power)
   } else if ( predictors == 10) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, b9_power, b10_power, total_power)
+    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, b9_power, b10_power, simultaneous_power)
   }
 
   return(power)
