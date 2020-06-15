@@ -1,6 +1,6 @@
 #' Simulate simultaneous power for multiple tests
 #'
-#' Simulate power to simultaneously detect significant effects for a set of statistical tests in a single multivariate model. This function simulates data based on a correlation matrix imposed using the SimMultiCorrData package (Fialkowski, A. C., 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
+#' Simulate power to simultaneously detect significant effects for a set of statistical tests in a single multivariate model. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
 #'
 #' When you use this function (and we hope you do!), please cite it as:
 #'
@@ -21,7 +21,7 @@
 #'
 #' @author Joel Le Forestier (joel.leforestier@@mail.utoronto.ca)
 #'
-#' @references Fialkowski, A. C. (2018). SimMultiCorrData: Simulation of correlated data with multiple variable types. Comprehensive R Archive Network (CRAN).
+#' @references Fialkowski, A. C. (2018). SimmCorrMix: Simulation of correlated data with multiple variable types including continuous and count mixture distributions. Comprehensive R Archive Network (CRAN).
 #'
 #' Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psychometrika, 43, 521-532.
 #'
@@ -84,14 +84,16 @@ simusim <- function(predictors = 2, popsize = 100000, iterations = 10000, alpha 
                        b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, 1), 11, 11)
 
   set.seed(seed)
-  invisible(capture.output(dist <- SimMultiCorrData::rcorrvar(n = popsize,
+  invisible(capture.output(dist <- SimCorrMix::corrvar(n = popsize,
                    k_cont = 11,
                    method = "Fleishman",
                    means = rep(0, times = 11),
                    vars = rep(1, times = 11),
                    skews = rep(0, times = 11),
                    skurts = rep(0, times = 11),
-                   rho = cortable)$continuous_variables))
+                   rho = cortable)$Y_cont))
+
+  dist <- data.frame(dist)
 
   names(dist) <- c("iv1", "iv2", "iv3", "iv4", "iv5", "iv6", "iv7", "iv8", "iv9", "iv10", "dv")
 
