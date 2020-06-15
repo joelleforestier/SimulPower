@@ -5,14 +5,16 @@ TO INSTALL THIS PACKAGE:
 # Install the devtools package (if you don't already have it installed) which allows you to install packages from GitHub
 install.packages("devtools")
 
-# Load the devtools library
-library(devtools)
-
 # Install SimuSim
-install_github("joelleforestier/SimuSim")
+devtools::install_github("joelleforestier/SimuSim")
+
+TO USE THIS PACKAGE:
 
 # Load SimuSim
 library(SimuSim)
+
+# Consult the simusim function's help page for guidance
+?simusim
 
 TO CITE THIS PACKAGE:
 
