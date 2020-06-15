@@ -4,7 +4,7 @@
 #'
 #' When you use this function (and we hope you do!), please cite it as:
 #'
-#' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
+#' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
 #'
 #' @usage simusim(n = NULL, b1 = NULL, b2 = NULL)
 #'
