@@ -8,12 +8,12 @@
 #'
 #' @usage simusim.bivar(n = NULL, b1 = NULL, b2 = NULL)
 #'
-#' @param models How many models would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10. Note that this argument is required if you specify more than 2 effect sizes. 
-#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive integer.
-#' @param iterations How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any positive integer.
+#' @param models How many models would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify more than 2 effect sizes. 
+#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number
+#' @param iterations How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.
 #' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
-#' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population.
+#' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive whole number smaller than your population.
 #' @param d1...d10 The effect size, expressed as Cohen's d, for each model. You should specify a number of effect sizes equal to the number you specified in the "models" argument. That is, if you set models to equal 4, you should supply values for d1, d2, d3, and d4. You should always specify these in order, beginning with d1, and not skipping any. You must specify effect sizes for at least d1 and d2. Accepts any number.
 #'
 #' @value A dataframe containing a power estiamte, expressed as a decimal, for each of the models individually, and for all the models simultaneously.
@@ -60,6 +60,21 @@ simusim.bivar <- function(n, d1, d2,
     stop("Your sample size is greater than or equal to your population size. Please increase popsize or decrease n.")
   }
   
+  # Throw a warning if the number of iterations is 0 or negative #
+  if(iterations < 1 | round(iterations, 0) != iterations) {
+    stop("You have specified an invalid number of iterations. Please specify a whole number greater than 0.")
+  }
+  
+  # Throw a warning if the sample size is 0 or negative #
+  if(n < 1 | round(n, 0) != n) {
+    stop("You have specified an invalid sample size. Please specify a whole number greater than 0.")
+  }
+  
+  # Throw a warning if the sample size is 0 or negative #
+  if(popsize < 1 | round(popsize, 0) != popsize) {
+    stop("You have specified an invalid population size. Please specify a whole number greater than 0.")
+  }
+
   # Simulate the population #
   cortable <- matrix(c(1,d1/(sqrt(d1**2 + 4)),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                        d1/(sqrt(d1**2 + 4)),1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

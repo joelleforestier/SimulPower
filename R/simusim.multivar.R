@@ -8,9 +8,9 @@
 #'
 #' @usage simusim.multivar(n = NULL, b1 = NULL, b2 = NULL)
 #'
-#' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10. Note that this argument is required if you specify beta values for more that 2 predictors.
-#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive integer.
-#' @param iterations How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any positive integer.
+#' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify beta values for more that 2 predictors.
+#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number
+#' @param iterations How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.
 #' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
 #' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population.
@@ -68,6 +68,21 @@ simusim.multivar <- function(n, b1, b2,
   # Throw a warning if the sample size is greater than or equal to the population size #
   if(n >= popsize) {
     stop("Your sample size is greater than or equal to your population size. Please increase popsize or decrease n.")
+  }
+
+  # Throw a warning if the number of iterations is 0 or negative #
+  if(iterations < 1 | round(iterations, 0) != iterations) {
+    stop("You have specified an invalid number of iterations. Please specify a whole number greater than 0.")
+  }
+
+  # Throw a warning if the sample size is 0 or negative #
+  if(n < 1 | round(n, 0) != n) {
+    stop("You have specified an invalid sample size. Please specify a whole number greater than 0.")
+  }
+
+  # Throw a warning if the sample size is 0 or negative #
+  if(popsize < 1 | round(popsize, 0) != popsize) {
+    stop("You have specified an invalid population size. Please specify a whole number greater than 0.")
   }
 
   # Simulate the population #

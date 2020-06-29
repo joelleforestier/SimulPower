@@ -9,11 +9,11 @@ simusim.multivar(n = NULL, b1 = NULL, b2 = NULL)
 \arguments{
 \item{n}{Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population.}
 
-\item{predictors}{How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts integers in the range of 2 to 10. Note that this argument is required if you specify beta values for more that 2 predictors.}
+\item{predictors}{How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify beta values for more that 2 predictors.}
 
-\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive integer.}
+\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number}
 
-\item{iterations}{How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any positive integer.}
+\item{iterations}{How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.}
 
 \item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.}
 
