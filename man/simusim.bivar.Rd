@@ -4,10 +4,12 @@
 \alias{simusim.bivar}
 \title{Simulate simultaneous power for multiple tests in separate models}
 \usage{
-simusim.bivar(n = NULL, b1 = NULL, b2 = NULL)
+simusim.bivar(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
 }
 \arguments{
 \item{n}{Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive whole number smaller than your population.}
+
+\item{es}{Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for.}
 
 \item{models}{How many models would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify more than 2 effect sizes.}
 
@@ -15,11 +17,11 @@ simusim.bivar(n = NULL, b1 = NULL, b2 = NULL)
 
 \item{iterations}{How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.}
 
-\item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.}
+\item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.}
 
 \item{seed}{Set a seed to make your results reproducible. Default = 1. Accepts any number.}
 
-\item{d1...d10}{The effect size, expressed as Cohen's d, for each model. You should specify a number of effect sizes equal to the number you specified in the "models" argument. That is, if you set models to equal 4, you should supply values for d1, d2, d3, and d4. You should always specify these in order, beginning with d1, and not skipping any. You must specify effect sizes for at least d1 and d2. Accepts any number.}
+\item{es1...es10}{The effect size, expressed in units specified in the es argument, for each model. You should specify a number of "es"s equal to the number you specified in the "models" argument. That is, if you set models to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.}
 }
 \description{
 Simulate power to simultaneously detect significant effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables.
@@ -32,11 +34,11 @@ Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistica
 \examples{
 # A basic example, leaving all the defaults in place.
 
-simusim.bivar(n = 150, d1 = .2, d2 = .45)
+simusim.bivar(n = 150, es = "r", es1 = .2, es2 = .45)
 
 # Another example, customizing additional parameters.
 
-simusim.bivar(n = 300, d1 = .6, d2 = .43, d3 = .21, models = 3,
+simusim.bivar(n = 300, es = "r2", es1 = .04, es2 = .01, es3 = .11, models = 3,
      popsize = 500000, alpha = .01, seed = 123)
 
 }

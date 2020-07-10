@@ -4,22 +4,24 @@
 \alias{simusim.multivar}
 \title{Simulate simultaneous power for multiple tests in a single model}
 \usage{
-simusim.multivar(n = NULL, b1 = NULL, b2 = NULL)
+simusim.multivar(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
 }
 \arguments{
 \item{n}{Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population.}
 
-\item{predictors}{How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify beta values for more that 2 predictors.}
+\item{es}{Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for.}
+
+\item{predictors}{How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify effect size values for more that 2 predictors.}
 
 \item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number}
 
 \item{iterations}{How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.}
 
-\item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.}
+\item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.}
 
 \item{seed}{Set a seed to make your results reproducible. Default = 1. Accepts any number.}
 
-\item{b1...b10}{The effect size, expressed as correlation coefficients (r, or standardized betas), for each predictor in your model. You should specify a number of "b"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for b1, b2, b3, and b4. You should always specify these in order, beginning with b1, and not skipping any. Accepts any number between -1 and 1.}
+\item{es1...es10}{The effect size, expressed in units specified in the es argument, for the relationship between each predictor and the dependent variable. You should specify a number of "es"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.}
 
 \item{iv1iv2_cov...iv9iv10_cov}{The covariance, expressed as correlation coefficients (r), between each set of predictors. Specifying covariances between predictors is optional unless your predictors, together, account for more than 100\% of the variance in your DV, in which case you must specify covariances between your predictors to make that possible. Default = 0. Accepts any number between -1 and 1.}
 }
@@ -34,11 +36,11 @@ Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistica
 \examples{
 # A basic example, leaving all the defaults in place.
 
-simusim.multivar(n = 150, b1 = .2, b2 = .15)
+simusim.multivar(n = 150, es = "r", es1 = .2, es2 = .15)
 
 # Another example, customizing additional parameters.
 
-simusim.multivar(n = 300, b1 = .1, b2 = .2, b3 = .15, predictors = 3,
+simusim.multivar(n = 300, es = "d", es1 = .4, es2 = .3, es3 = .45, predictors = 3,
      iv1iv2_cov = .2, popsize = 500000, alpha = .01, seed = 123)
 
 }

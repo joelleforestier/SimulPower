@@ -6,15 +6,16 @@
 #'
 #' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
 #'
-#' @usage simusim.multivar(n = NULL, b1 = NULL, b2 = NULL)
+#' @usage simusim.multivar(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
 #'
-#' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify beta values for more that 2 predictors.
+#' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population.
+#' @param es Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for.
+#' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify effect size values for more that 2 predictors.
 #' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number
 #' @param iterations How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.
-#' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number.
+#' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.
 #' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
-#' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population.
-#' @param b1...b10 The effect size, expressed as correlation coefficients (r, or standardized betas), for each predictor in your model. You should specify a number of "b"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for b1, b2, b3, and b4. You should always specify these in order, beginning with b1, and not skipping any. Accepts any number between -1 and 1.
+#' @param es1...es10 The effect size, expressed in units specified in the es argument, for the relationship between each predictor and the dependent variable. You should specify a number of "es"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.
 #' @param iv1iv2_cov...iv9iv10_cov The covariance, expressed as correlation coefficients (r), between each set of predictors. Specifying covariances between predictors is optional unless your predictors, together, account for more than 100% of the variance in your DV, in which case you must specify covariances between your predictors to make that possible. Default = 0. Accepts any number between -1 and 1.
 #'
 #' @value A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously.
@@ -29,17 +30,17 @@
 #'
 #' @examples # A basic example, leaving all the defaults in place.
 #'
-#' simusim.multivar(n = 150, b1 = .2, b2 = .15)
+#' simusim.multivar(n = 150, es = "r", es1 = .2, es2 = .15)
 #'
 #' # Another example, customizing additional parameters.
 #'
-#' simusim.multivar(n = 300, b1 = .1, b2 = .2, b3 = .15, predictors = 3,
+#' simusim.multivar(n = 300, es = "d", es1 = .4, es2 = .3, es3 = .45, predictors = 3,
 #'      iv1iv2_cov = .2, popsize = 500000, alpha = .01, seed = 123)
 #'
 #' @export
 
-simusim.multivar <- function(n, b1, b2,
-                    b3 = 0, b4 = 0, b5 = 0, b6 = 0, b7 = 0, b8 = 0, b9 = 0, b10 = 0,
+simusim.multivar <- function(n, es, es1, es2,
+                    es3 = 0, es4 = 0, es5 = 0, es6 = 0, es7 = 0, es8 = 0, es9 = 0, es10 = 0,
                     iv1iv2_cov = 0, iv1iv3_cov = 0, iv1iv4_cov = 0, iv1iv5_cov = 0, iv1iv6_cov = 0, iv1iv7_cov = 0, iv1iv8_cov = 0, iv1iv9_cov = 0, iv1iv10_cov = 0,
                     iv2iv3_cov = 0, iv2iv4_cov = 0, iv2iv5_cov = 0, iv2iv6_cov = 0, iv2iv7_cov = 0, iv2iv8_cov = 0, iv2iv9_cov = 0, iv2iv10_cov = 0,
                     iv3iv4_cov = 0, iv3iv5_cov = 0, iv3iv6_cov = 0, iv3iv7_cov = 0, iv3iv8_cov = 0, iv3iv9_cov = 0, iv3iv10_cov = 0,
@@ -54,10 +55,12 @@ simusim.multivar <- function(n, b1, b2,
   # Throw a warning if the user has specified the wrong number of predictors #
   dummy_beta <- 0
 
-  specified_params <- table(c(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, dummy_beta))
+
+  # Throw a warning if the user has specified a number of parameters not equal to the number of effect sizes they specified #
+  specified_params <- table(c(es1, es2, es3, es4, es5, es6, es7, es8, es9, es10, dummy_beta))
 
   if(specified_params["0"] != (11 - predictors)) {
-    stop("You have specified the wrong number of predictors. Make sure to set the predictors argument to equal the number of predictors for which you have specified effect sizes. Additionally, ensure to specify effect sizes for predictors in order, beginning with b1, and not skipping any along the way. ")
+    stop("You have specified the wrong number of predictors. Make sure to set the predictors argument to equal the number of predictors for which you have specified effect sizes. Additionally, ensure to specify effect sizes for predictors in order, beginning with es1, and not skipping any along the way.")
   }
 
   # Throw a warning if the user has left n blank #
@@ -80,24 +83,51 @@ simusim.multivar <- function(n, b1, b2,
     stop("You have specified an invalid sample size. Please specify a whole number greater than 0.")
   }
 
-  # Throw a warning if the sample size is 0 or negative #
+  # Throw a warning if the population size is 0 or negative #
   if(popsize < 1 | round(popsize, 0) != popsize) {
     stop("You have specified an invalid population size. Please specify a whole number greater than 0.")
   }
 
-  # Simulate the population #
-  cortable <- matrix(c(1, iv1iv2_cov, iv1iv3_cov, iv1iv4_cov, iv1iv5_cov, iv1iv6_cov, iv1iv7_cov, iv1iv8_cov, iv1iv9_cov, iv1iv10_cov, b1,
-                       iv1iv2_cov, 1, iv2iv3_cov, iv2iv4_cov, iv2iv5_cov, iv2iv6_cov, iv2iv7_cov, iv2iv8_cov, iv2iv9_cov, iv2iv10_cov, b2,
-                       iv1iv3_cov, iv2iv3_cov, 1, iv3iv4_cov, iv3iv5_cov, iv3iv6_cov, iv3iv7_cov, iv3iv8_cov, iv3iv9_cov, iv3iv10_cov, b3,
-                       iv1iv4_cov, iv2iv4_cov, iv3iv4_cov, 1, iv4iv5_cov, iv4iv6_cov, iv4iv7_cov, iv4iv8_cov, iv4iv9_cov, iv4iv10_cov, b4,
-                       iv1iv5_cov, iv2iv5_cov, iv3iv5_cov, iv4iv5_cov, 1, iv5iv6_cov, iv5iv7_cov, iv5iv8_cov, iv5iv9_cov, iv5iv10_cov, b5,
-                       iv1iv6_cov, iv2iv6_cov, iv3iv6_cov, iv4iv6_cov, iv5iv6_cov, 1, iv6iv7_cov, iv6iv8_cov, iv6iv9_cov, iv6iv10_cov, b6,
-                       iv1iv7_cov, iv2iv7_cov, iv3iv7_cov, iv4iv7_cov, iv5iv7_cov, iv6iv7_cov, 1, iv7iv8_cov, iv7iv9_cov, iv7iv10_cov, b7,
-                       iv1iv8_cov, iv2iv8_cov, iv3iv8_cov, iv4iv8_cov, iv5iv8_cov, iv6iv8_cov, iv7iv8_cov, 1, iv8iv9_cov, iv8iv10_cov, b8,
-                       iv1iv9_cov, iv2iv9_cov, iv3iv9_cov, iv4iv9_cov, iv5iv9_cov, iv6iv9_cov, iv7iv9_cov, iv8iv9_cov, 1, iv9iv10_cov, b9,
-                       iv1iv10_cov, iv2iv10_cov, iv3iv10_cov, iv4iv10_cov, iv5iv10_cov, iv6iv10_cov, iv7iv10_cov, iv8iv10_cov, iv9iv10_cov, 1, b10,
-                       b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, 1), 11, 11)
+  # Throw a warning if es is not r, r2, or d #
+  if(es != "d" & es != "r" & es != "r2") {
+    stop("You have specified an invalid type effect size. Please specify whether you are inputting")
+  }
 
+  # Throw a warning if the alpha level is not a number > 0 and < 1 #
+  if(alpha <=0 | alpha >= 1) {
+    stop("You have specified an incorrect alpha level. Please specify an alpha level greater than 0 and less than 1.")
+  }
+
+  # Generate the correlation matrix for the population #
+  cortable <- matrix(c(1, iv1iv2_cov, iv1iv3_cov, iv1iv4_cov, iv1iv5_cov, iv1iv6_cov, iv1iv7_cov, iv1iv8_cov, iv1iv9_cov, iv1iv10_cov, es1,
+                       iv1iv2_cov, 1, iv2iv3_cov, iv2iv4_cov, iv2iv5_cov, iv2iv6_cov, iv2iv7_cov, iv2iv8_cov, iv2iv9_cov, iv2iv10_cov, es2,
+                       iv1iv3_cov, iv2iv3_cov, 1, iv3iv4_cov, iv3iv5_cov, iv3iv6_cov, iv3iv7_cov, iv3iv8_cov, iv3iv9_cov, iv3iv10_cov, es3,
+                       iv1iv4_cov, iv2iv4_cov, iv3iv4_cov, 1, iv4iv5_cov, iv4iv6_cov, iv4iv7_cov, iv4iv8_cov, iv4iv9_cov, iv4iv10_cov, es4,
+                       iv1iv5_cov, iv2iv5_cov, iv3iv5_cov, iv4iv5_cov, 1, iv5iv6_cov, iv5iv7_cov, iv5iv8_cov, iv5iv9_cov, iv5iv10_cov, es5,
+                       iv1iv6_cov, iv2iv6_cov, iv3iv6_cov, iv4iv6_cov, iv5iv6_cov, 1, iv6iv7_cov, iv6iv8_cov, iv6iv9_cov, iv6iv10_cov, es6,
+                       iv1iv7_cov, iv2iv7_cov, iv3iv7_cov, iv4iv7_cov, iv5iv7_cov, iv6iv7_cov, 1, iv7iv8_cov, iv7iv9_cov, iv7iv10_cov, es7,
+                       iv1iv8_cov, iv2iv8_cov, iv3iv8_cov, iv4iv8_cov, iv5iv8_cov, iv6iv8_cov, iv7iv8_cov, 1, iv8iv9_cov, iv8iv10_cov, es8,
+                       iv1iv9_cov, iv2iv9_cov, iv3iv9_cov, iv4iv9_cov, iv5iv9_cov, iv6iv9_cov, iv7iv9_cov, iv8iv9_cov, 1, iv9iv10_cov, es9,
+                       iv1iv10_cov, iv2iv10_cov, iv3iv10_cov, iv4iv10_cov, iv5iv10_cov, iv6iv10_cov, iv7iv10_cov, iv8iv10_cov, iv9iv10_cov, 1, es10,
+                       es1, es2, es3, es4, es5, es6, es7, es8, es9, es10, 1), 11, 11)
+
+  # Convert effect size into correlation coefficients #
+  if (es == "d") {
+    cortable <- cortable / sqrt(cortable**2 + 4)
+    for(a in 1:11) {
+    cortable[a,a] <- 1
+    }
+  } else if (es == "r2") {
+    cortable <- sqrt(cortable)
+    for(a in 1:11) {
+      cortable[a,a] <- 1
+    }
+  }
+
+  # Let the user know it's working #
+  message("Simulating the population.")
+
+  # Simulate the population #
   set.seed(seed)
   invisible(capture.output(dist <- SimCorrMix::corrvar(n = popsize,
                    k_cont = 11,
@@ -119,7 +149,7 @@ simusim.multivar <- function(n, b1, b2,
   }
 
   # Let the user know it's working #
-  message(paste("Running", iterations, "simulations. This may take a minute.", sep = " "))
+  message(paste("Running", iterations, "models This may take a minute.", sep = " "))
 
   # Run the model i times #
   result <- vector()
@@ -132,27 +162,27 @@ simusim.multivar <- function(n, b1, b2,
     model <- data.frame(summary(lm(design, data = sample))$coefficients)
 
     for(v in 1:predictors){
-      assign(paste("b", v, "_result", sep = ""), model$Pr...t..[v+1] < alpha)
+      assign(paste("es", v, "_result", sep = ""), model$Pr...t..[v+1] < alpha)
     }
 
     if (predictors == 2) {
-      result <- rbind(result, data.frame(b1_result, b2_result))
+      result <- rbind(result, data.frame(es1_result, es2_result))
     } else if (predictors == 3) {
-      result <- rbind(result, data.frame(b1_result, b2_result, b3_result))
+      result <- rbind(result, data.frame(es1_result, es2_result, es3_result))
     } else if (predictors == 4) {
-      result <- rbind(result, data.frame(b1_result, b2_result, b3_result, b4_result))
+      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result))
     } else if (predictors == 5) {
-      result <- rbind(result, data.frame(b1_result, b2_result, b3_result, b4_result, b5_result))
+      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result))
     } else if (predictors == 6) {
-      result <- rbind(result, data.frame(b1_result, b2_result, b3_result, b4_result, b5_result, b6_result))
+      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result))
     } else if (predictors == 7) {
-      result <- rbind(result, data.frame(b1_result, b2_result, b3_result, b4_result, b5_result, b6_result, b7_result))
+      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result))
     } else if (predictors == 8) {
-      result <- rbind(result, data.frame(b1_result, b2_result, b3_result, b4_result, b5_result, b6_result, b7_result, b8_result))
+      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result))
     } else if (predictors == 9) {
-      result <- rbind(result, data.frame(b1_result, b2_result, b3_result, b4_result, b5_result, b6_result, b7_result, b8_result, b9_result))
+      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result, es9_result))
     } else if (predictors == 10) {
-      result <- rbind(result, data.frame(b1_result, b2_result, b3_result, b4_result, b5_result, b6_result, b7_result, b8_result, b9_result, b10_result))
+      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result, es9_result, es10_result))
     }
 
   }
@@ -161,81 +191,81 @@ simusim.multivar <- function(n, b1, b2,
   result$simultaneous <- FALSE
 
   if (predictors == 2) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE] <- TRUE
   } else if (predictors == 3) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE & result$es3_result == TRUE] <- TRUE
   } else if (predictors == 4) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE & result$es3_result == TRUE & result$es4_result == TRUE] <- TRUE
   } else if (predictors == 5) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE & result$es3_result == TRUE & result$es4_result == TRUE & result$es5_result == TRUE] <- TRUE
   } else if (predictors == 6) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
-                   result$b6_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE & result$es3_result == TRUE & result$es4_result == TRUE & result$es5_result == TRUE &
+                   result$es6_result == TRUE] <- TRUE
   } else if (predictors == 7) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
-                   result$b6_result == TRUE & result$b7_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE & result$es3_result == TRUE & result$es4_result == TRUE & result$es5_result == TRUE &
+                   result$es6_result == TRUE & result$es7_result == TRUE] <- TRUE
   } else if (predictors == 8) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
-                   result$b6_result == TRUE & result$b7_result == TRUE & result$b8_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE & result$es3_result == TRUE & result$es4_result == TRUE & result$es5_result == TRUE &
+                   result$es6_result == TRUE & result$es7_result == TRUE & result$es8_result == TRUE] <- TRUE
   } else if (predictors == 9) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
-                   result$b6_result == TRUE & result$b7_result == TRUE & result$b8_result == TRUE & result$b9_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE & result$es3_result == TRUE & result$es4_result == TRUE & result$es5_result == TRUE &
+                   result$es6_result == TRUE & result$es7_result == TRUE & result$es8_result == TRUE & result$es9_result == TRUE] <- TRUE
   } else if (predictors == 10) {
-    result$simultaneous[result$b1_result == TRUE & result$b2_result == TRUE & result$b3_result == TRUE & result$b4_result == TRUE & result$b5_result == TRUE &
-                   result$b6_result == TRUE & result$b7_result == TRUE & result$b8_result == TRUE & result$b9_result == TRUE & result$b10_result == TRUE] <- TRUE
+    result$simultaneous[result$es1_result == TRUE & result$es2_result == TRUE & result$es3_result == TRUE & result$es4_result == TRUE & result$es5_result == TRUE &
+                   result$es6_result == TRUE & result$es7_result == TRUE & result$es8_result == TRUE & result$es9_result == TRUE & result$es10_result == TRUE] <- TRUE
   }
 
   result[result == "TRUE"] <- 1
 
   # Calculate power #
   simultaneous_power <- mean(result$simultaneous)
-  b1_power <- mean(result$b1_result)
-  b2_power <- mean(result$b2_result)
+  es1_power <- mean(result$es1_result)
+  es2_power <- mean(result$es2_result)
   if (predictors > 2) {
-    b3_power <- mean(result$b3_result)
+    es3_power <- mean(result$es3_result)
   }
   if (predictors > 3) {
-    b4_power <- mean(result$b4_result)
+    es4_power <- mean(result$es4_result)
   }
   if (predictors > 4) {
-    b5_power <- mean(result$b5_result)
+    es5_power <- mean(result$es5_result)
   }
   if (predictors > 5) {
-    b6_power <- mean(result$b6_result)
+    es6_power <- mean(result$es6_result)
   }
   if (predictors > 6) {
-    b7_power <- mean(result$b7_result)
+    es7_power <- mean(result$es7_result)
   }
   if (predictors > 7) {
-    b8_power <- mean(result$b8_result)
+    es8_power <- mean(result$es8_result)
   }
   if (predictors > 8) {
-    b9_power <- mean(result$b9_result)
+    es9_power <- mean(result$es9_result)
   }
   if (predictors > 9) {
-    b10_power <- mean(result$b10_result)
+    es10_power <- mean(result$es10_result)
   }
 
   # Summarize results
 
   if (predictors == 2) {
-    power <- data.frame(b1_power, b2_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, simultaneous_power)
   } else if ( predictors == 3) {
-    power <- data.frame(b1_power, b2_power, b3_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, es3_power, simultaneous_power)
   } else if ( predictors == 4) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, es3_power, es4_power, simultaneous_power)
   } else if ( predictors == 5) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, es3_power, es4_power, es5_power, simultaneous_power)
   } else if ( predictors == 6) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, es3_power, es4_power, es5_power, es6_power, simultaneous_power)
   } else if ( predictors == 7) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, es3_power, es4_power, es5_power, es6_power, es7_power, simultaneous_power)
   } else if ( predictors == 8) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, es3_power, es4_power, es5_power, es6_power, es7_power, es8_power, simultaneous_power)
   } else if ( predictors == 9) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, b9_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, es3_power, es4_power, es5_power, es6_power, es7_power, es8_power, es9_power, simultaneous_power)
   } else if ( predictors == 10) {
-    power <- data.frame(b1_power, b2_power, b3_power, b4_power, b5_power, b6_power, b7_power, b8_power, b9_power, b10_power, simultaneous_power)
+    power <- data.frame(es1_power, es2_power, es3_power, es4_power, es5_power, es6_power, es7_power, es8_power, es9_power, es10_power, simultaneous_power)
   }
 
   return(power)
