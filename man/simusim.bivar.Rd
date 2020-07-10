@@ -23,6 +23,9 @@ simusim.bivar(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
 
 \item{es1...es10}{The effect size, expressed in units specified in the es argument, for each model. You should specify a number of "es"s equal to the number you specified in the "models" argument. That is, if you set models to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.}
 }
+\value{
+A dataframe containing a power estiamte, expressed as a decimal, for each of the models individually, and for all the models simultaneously.
+}
 \description{
 Simulate power to simultaneously detect significant effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables.
 }
