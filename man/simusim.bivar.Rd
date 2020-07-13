@@ -15,7 +15,7 @@ simusim.bivar(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
 
 \item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number}
 
-\item{iterations}{How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.}
+\item{iterations}{How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.}
 
 \item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.}
 

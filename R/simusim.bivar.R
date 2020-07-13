@@ -12,7 +12,7 @@
 #' @param es Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for.
 #' @param models How many models would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify more than 2 effect sizes.
 #' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number
-#' @param iterations How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.
+#' @param iterations How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.
 #' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
 #' @param es1...es10 The effect size, expressed in units specified in the es argument, for each model. You should specify a number of "es"s equal to the number you specified in the "models" argument. That is, if you set models to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.
@@ -40,7 +40,7 @@
 
 simusim.bivar <- function(n, es, es1, es2,
                           es3 = 0, es4 = 0, es5 = 0, es6 = 0, es7 = 0, es8 = 0, es9 = 0, es10 = 0,
-                          models = 2, popsize = 100000, iterations = 10000, alpha = .05, seed = 1) {
+                          models = 2, popsize = 100000, iterations = 5000, alpha = .05, seed = 1) {
 
   # Throw a warning if the user has specified the wrong number of models #
   dummy_es <- 0
@@ -150,88 +150,85 @@ simusim.bivar <- function(n, es, es1, es2,
                    "iv10", "dv10")
 
   # Let the user know it's working #
-  message(paste("Running", iterations, "models. This may take a minute.", sep = " "))
+  message(paste("Running", iterations, "sets of tests. This may take a minute.", sep = " "))
+
+  # Set up for parallelization #
+  doParallel::registerDoParallel(parallel::detectCores())
+  `%dopar%` <- foreach::`%dopar%`
 
   # Run the models i times #
   result <- vector()
 
-  set.seed(seed + 1)
+  result <- foreach::foreach (i=1:iterations, .combine=rbind) %dopar% {
+    set.seed(seed + i)
 
-  for(i in 1:iterations) {
-
-    sample <- dist[sample(nrow(dist), size = n),]
+    sample <- dist[sample(nrow(dist), size = n), ]
 
     if (models == 2) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
-
       round_results <- data.frame(es1_result, es2_result)
-      result <- rbind(result,
-                      round_results)
-    } else if (models == 3) {
+      result <- rbind(result, round_results)
+    }
+    else if (models == 3) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
       model3 <- data.frame(summary(lm(dv3 ~ iv3, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       es3_result <- model3$Pr...t..[2] < alpha
-
-      round_results <- data.frame(es1_result, es2_result, es3_result)
-      result <- rbind(result,
-                      round_results)
-    } else if (models == 4) {
+      round_results <- data.frame(es1_result, es2_result,
+                                  es3_result)
+      result <- rbind(result, round_results)
+    }
+    else if (models == 4) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
       model3 <- data.frame(summary(lm(dv3 ~ iv3, data = sample))$coefficients)
       model4 <- data.frame(summary(lm(dv4 ~ iv4, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       es3_result <- model3$Pr...t..[2] < alpha
       es4_result <- model4$Pr...t..[2] < alpha
-
-      round_results <- data.frame(es1_result, es2_result, es3_result, es4_result)
-      result <- rbind(result,
-                      round_results)
-    } else if (models == 5) {
+      round_results <- data.frame(es1_result, es2_result,
+                                  es3_result, es4_result)
+      result <- rbind(result, round_results)
+    }
+    else if (models == 5) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
       model3 <- data.frame(summary(lm(dv3 ~ iv3, data = sample))$coefficients)
       model4 <- data.frame(summary(lm(dv4 ~ iv4, data = sample))$coefficients)
       model5 <- data.frame(summary(lm(dv5 ~ iv5, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       es3_result <- model3$Pr...t..[2] < alpha
       es4_result <- model4$Pr...t..[2] < alpha
       es5_result <- model5$Pr...t..[2] < alpha
-
-      round_results <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result)
-      result <- rbind(result,
-                      round_results)
-    } else if (models == 6) {
+      round_results <- data.frame(es1_result, es2_result,
+                                  es3_result, es4_result, es5_result)
+      result <- rbind(result, round_results)
+    }
+    else if (models == 6) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
       model3 <- data.frame(summary(lm(dv3 ~ iv3, data = sample))$coefficients)
       model4 <- data.frame(summary(lm(dv4 ~ iv4, data = sample))$coefficients)
       model5 <- data.frame(summary(lm(dv5 ~ iv5, data = sample))$coefficients)
       model6 <- data.frame(summary(lm(dv6 ~ iv6, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       es3_result <- model3$Pr...t..[2] < alpha
       es4_result <- model4$Pr...t..[2] < alpha
       es5_result <- model5$Pr...t..[2] < alpha
       es6_result <- model6$Pr...t..[2] < alpha
-
-      round_results <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result)
-      result <- rbind(result,
-                      round_results)
-    } else if (models == 7) {
+      round_results <- data.frame(es1_result, es2_result,
+                                  es3_result, es4_result, es5_result, es6_result)
+      result <- rbind(result, round_results)
+    }
+    else if (models == 7) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
       model3 <- data.frame(summary(lm(dv3 ~ iv3, data = sample))$coefficients)
@@ -239,7 +236,6 @@ simusim.bivar <- function(n, es, es1, es2,
       model5 <- data.frame(summary(lm(dv5 ~ iv5, data = sample))$coefficients)
       model6 <- data.frame(summary(lm(dv6 ~ iv6, data = sample))$coefficients)
       model7 <- data.frame(summary(lm(dv7 ~ iv7, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       es3_result <- model3$Pr...t..[2] < alpha
@@ -247,11 +243,12 @@ simusim.bivar <- function(n, es, es1, es2,
       es5_result <- model5$Pr...t..[2] < alpha
       es6_result <- model6$Pr...t..[2] < alpha
       es7_result <- model7$Pr...t..[2] < alpha
-
-      round_results <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result)
-      result <- rbind(result,
-                      round_results)
-    } else if (models == 8) {
+      round_results <- data.frame(es1_result, es2_result,
+                                  es3_result, es4_result, es5_result, es6_result,
+                                  es7_result)
+      result <- rbind(result, round_results)
+    }
+    else if (models == 8) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
       model3 <- data.frame(summary(lm(dv3 ~ iv3, data = sample))$coefficients)
@@ -260,7 +257,6 @@ simusim.bivar <- function(n, es, es1, es2,
       model6 <- data.frame(summary(lm(dv6 ~ iv6, data = sample))$coefficients)
       model7 <- data.frame(summary(lm(dv7 ~ iv7, data = sample))$coefficients)
       model8 <- data.frame(summary(lm(dv8 ~ iv8, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       es3_result <- model3$Pr...t..[2] < alpha
@@ -269,11 +265,12 @@ simusim.bivar <- function(n, es, es1, es2,
       es6_result <- model6$Pr...t..[2] < alpha
       es7_result <- model7$Pr...t..[2] < alpha
       es8_result <- model8$Pr...t..[2] < alpha
-
-      round_results <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result)
-      result <- rbind(result,
-                      round_results)
-    } else if (models == 9) {
+      round_results <- data.frame(es1_result, es2_result,
+                                  es3_result, es4_result, es5_result, es6_result,
+                                  es7_result, es8_result)
+      result <- rbind(result, round_results)
+    }
+    else if (models == 9) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
       model3 <- data.frame(summary(lm(dv3 ~ iv3, data = sample))$coefficients)
@@ -283,7 +280,6 @@ simusim.bivar <- function(n, es, es1, es2,
       model7 <- data.frame(summary(lm(dv7 ~ iv7, data = sample))$coefficients)
       model8 <- data.frame(summary(lm(dv8 ~ iv8, data = sample))$coefficients)
       model9 <- data.frame(summary(lm(dv9 ~ iv9, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       es3_result <- model3$Pr...t..[2] < alpha
@@ -293,11 +289,12 @@ simusim.bivar <- function(n, es, es1, es2,
       es7_result <- model7$Pr...t..[2] < alpha
       es8_result <- model8$Pr...t..[2] < alpha
       es9_result <- model9$Pr...t..[2] < alpha
-
-      round_results <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result, es9_result)
-      result <- rbind(result,
-                      round_results)
-    } else if (models == 10) {
+      round_results <- data.frame(es1_result, es2_result,
+                                  es3_result, es4_result, es5_result, es6_result,
+                                  es7_result, es8_result, es9_result)
+      result <- rbind(result, round_results)
+    }
+    else if (models == 10) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
       model2 <- data.frame(summary(lm(dv2 ~ iv2, data = sample))$coefficients)
       model3 <- data.frame(summary(lm(dv3 ~ iv3, data = sample))$coefficients)
@@ -308,7 +305,6 @@ simusim.bivar <- function(n, es, es1, es2,
       model8 <- data.frame(summary(lm(dv8 ~ iv8, data = sample))$coefficients)
       model9 <- data.frame(summary(lm(dv9 ~ iv9, data = sample))$coefficients)
       model10 <- data.frame(summary(lm(dv10 ~ iv10, data = sample))$coefficients)
-
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       es3_result <- model3$Pr...t..[2] < alpha
@@ -319,12 +315,11 @@ simusim.bivar <- function(n, es, es1, es2,
       es8_result <- model8$Pr...t..[2] < alpha
       es9_result <- model9$Pr...t..[2] < alpha
       es10_result <- model10$Pr...t..[2] < alpha
-
-      round_results <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result, es9_result, es10_result)
-      result <- rbind(result,
-                      round_results)
+      round_results <- data.frame(es1_result, es2_result,
+                                  es3_result, es4_result, es5_result, es6_result,
+                                  es7_result, es8_result, es9_result, es10_result)
+      result <- rbind(result, round_results)
     }
-
   }
 
   # Create variable for calculating simultaneous power #

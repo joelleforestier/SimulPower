@@ -12,7 +12,7 @@
 #' @param es Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for.
 #' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify effect size values for more that 2 predictors.
 #' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number
-#' @param iterations How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 10,000. Accepts any whole number greater than 0.
+#' @param iterations How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.
 #' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
 #' @param es1...es10 The effect size, expressed in units specified in the es argument, for the relationship between each predictor and the dependent variable. You should specify a number of "es"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.
@@ -50,7 +50,7 @@ simusim.multivar <- function(n, es, es1, es2,
                     iv7iv8_cov = 0, iv7iv9_cov = 0, iv7iv10_cov = 0,
                     iv8iv9_cov = 0, iv8iv10_cov = 0,
                     iv9iv10_cov = 0,
-                    predictors = 2, popsize = 100000, iterations = 10000, alpha = .05, seed = 1) {
+                    predictors = 2, popsize = 100000, iterations = 5000, alpha = .05, seed = 1) {
 
   # Throw a warning if the user has specified the wrong number of predictors #
   dummy_beta <- 0
@@ -149,16 +149,19 @@ simusim.multivar <- function(n, es, es1, es2,
   }
 
   # Let the user know it's working #
-  message(paste("Running", iterations, "models This may take a minute.", sep = " "))
+  message(paste("Running", iterations, "sets of tests. This may take a minute.", sep = " "))
+
+  # Set up for parallelization #
+  doParallel::registerDoParallel(parallel::detectCores())
+  `%dopar%` <- foreach::`%dopar%`
 
   # Run the model i times #
   result <- vector()
 
-  set.seed(seed + 1)
+  result <- foreach::foreach (i=1:iterations, .combine=rbind) %dopar% {
+    set.seed(seed + i)
 
-  for(i in 1:iterations) {
     sample <- dist[sample(nrow(dist), size = n),]
-
     model <- data.frame(summary(lm(design, data = sample))$coefficients)
 
     for(v in 1:predictors){
