@@ -1,6 +1,6 @@
 Package: SimuSim
 Title: Simultaneous Power Analysis for a Set of Statistical Tests
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: 
     person(given = "Joel",
            family = "Le Forestier",
