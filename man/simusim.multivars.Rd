@@ -36,7 +36,7 @@ Simulate power to simultaneously detect significant effects for a set of statist
 \details{
 When you use this function (and we hope you do!), please cite the package:
 
-Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests \link{Computer Software}.
+Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests \code{[}Computer Software\verb{]}.
 
 and/or cite the accompanying paper:
 
