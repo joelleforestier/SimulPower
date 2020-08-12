@@ -21,4 +21,10 @@ library(SimuSim)
 
 TO CITE THIS PACKAGE:
 
-When using this function, please cite as: Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
+When you use this function (and we hope you do!), please cite the package:
+
+Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests [Computer Software].
+
+and/or cite the accompanying paper:
+
+Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
