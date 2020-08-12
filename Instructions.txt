@@ -13,11 +13,11 @@ TO USE THIS PACKAGE:
 # Load SimuSim
 library(SimuSim)
 
-# If you want to assess power for multiple tests contained in a single model (e.g., separate predictors in a multiple regression), check the help page for simusim.multivar:
-?simusim.multivar
+# If you want to assess power for multiple tests contained in a single model (e.g., separate predictors in a multiple regression), check the help page for simusim.multivars:
+?simusim.multivars
 
-# If you want to assess power for multiple tests contained in separate models (e.g., multiple t-tests), check the help page for simusim.bivar:
-?simusim.bivar
+# If you want to assess power for multiple tests contained in separate models (e.g., multiple t-tests), check the help page for simusim.multimodels:
+?simusim.multimodels
 
 TO CITE THIS PACKAGE:
 
