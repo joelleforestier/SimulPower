@@ -34,16 +34,16 @@
 #'
 #' @examples # A basic example, leaving all the defaults in place.
 #'
-#' simusim.bivar(n = 150, es = "r", es1 = .2, es2 = .45)
+#' simusim.multimodels(n = 150, es = "r", es1 = .2, es2 = .45)
 #'
 #' # Another example, customizing additional parameters.
 #'
-#' simusim.bivar(n = 300, es = "r2", es1 = .04, es2 = .01, es3 = .00, models = 3,
+#' simusim.multimodels(n = 300, es = "r2", es1 = .04, es2 = .01, es3 = .00, models = 3,
 #'      null_effect = 3, popsize = 500000, alpha = .01, seed = 123)
 #'
 #' @export
 
-simusim.bivar <- function(n, es, es1, es2,
+simusim.multimodels <- function(n, es, es1, es2,
                           es3 = 0, es4 = 0, es5 = 0, es6 = 0, es7 = 0, es8 = 0, es9 = 0, es10 = 0,
                           models = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05, seed = 1) {
 
