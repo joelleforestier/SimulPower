@@ -1,10 +1,10 @@
 #' Simulate simultaneous power for multiple tests in separate models
 #'
-#' Simulate power to simultaneously detect significant effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables.
+#' Simulate power to simultaneously detect predicted effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables.
 #'
 #' When you use this function (and we hope you do!), please cite the package:
 #'
-#' Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests [Computer Software].
+#' Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests `[`Computer Software`]`.
 #'
 #' and/or cite the accompanying paper:
 #'
@@ -15,7 +15,7 @@
 #' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive whole number smaller than your population.
 #' @param es Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for.
 #' @param models How many models would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify more than 2 effect sizes.
-#' @param null_effect For which, if any, of your models are you computing "null power?" If you want to compute "power" to NOT detect any effects, use this argument to specify them by setting this argument equal to the number(s) corresponding to the models you hypothesize to be null. Accepts either a single whole number between 1 and the number of models you have specified or a vector of numbers between 1 and the the number of models you have specified.
+#' @param null_effect For which, if any, of your models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which models are predicted nulls by setting this argument equal to the number(s) corresponding to the models you hypothesize to be null. Accepts either a single whole number between 1 and the number of models you have specified or a vector of numbers between 1 and the the number of models you have specified.
 #' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number
 #' @param iterations How many times you would like to estimate your models in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.

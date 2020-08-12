@@ -13,7 +13,7 @@ simusim.multimodels(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
 
 \item{models}{How many models would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify more than 2 effect sizes.}
 
-\item{null_effect}{For which, if any, of your models are you computing "null power?" If you want to compute "power" to NOT detect any effects, use this argument to specify them by setting this argument equal to the number(s) corresponding to the models you hypothesize to be null. Accepts either a single whole number between 1 and the number of models you have specified or a vector of numbers between 1 and the the number of models you have specified.}
+\item{null_effect}{For which, if any, of your models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which models are predicted nulls by setting this argument equal to the number(s) corresponding to the models you hypothesize to be null. Accepts either a single whole number between 1 and the number of models you have specified or a vector of numbers between 1 and the the number of models you have specified.}
 
 \item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number}
 
@@ -29,12 +29,12 @@ simusim.multimodels(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
 A dataframe containing a power estiamte, expressed as a decimal, for each of the models individually, and for all the models simultaneously.
 }
 \description{
-Simulate power to simultaneously detect significant effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables.
+Simulate power to simultaneously detect predicted effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables.
 }
 \details{
 When you use this function (and we hope you do!), please cite the package:
 
-Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests \link{Computer Software}.
+Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests \code{[}Computer Software\verb{]}.
 
 and/or cite the accompanying paper:
 
