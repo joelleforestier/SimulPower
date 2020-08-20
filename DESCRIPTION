@@ -2,7 +2,7 @@ Package: SimuSim
 Title: Simultaneous Power Analysis for a Set of Statistical Tests
 Version: 0.4.0
 Authors@R: 
-    person(given = "Joel",
+    person(given = "Joel Michel",
            family = "Le Forestier",
            role = c("aut", "cre"),
            email = "joel.leforestier@mail.utoronto.ca",
@@ -11,7 +11,9 @@ Description: Perform statistical power analysis simultaneously for a set of test
 Imports: SimCorrMix (>= 0.1.1),
          doParallel (>= 1.0.15),
          foreach (>= 1.5.0),
-         parallel (>= 4.0.0)
+         parallel (>= 4.0.0),
+         ggplot2 (>= 3.3.1),
+         tidyr (>= 1.0.3)
 Date/Publication: 2020-06-18
 License: See LICENSE.txt
 Encoding: UTF-8

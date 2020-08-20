@@ -17,7 +17,7 @@
 #' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify effect size values for more that 2 predictors.
 #' @param null_effect For which, if any, of your predictors are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified.
 #' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number
-#' @param iterations How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.
+#' @param iterations How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.
 #' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
 #' @param es1...es10 The effect size, expressed in units specified in the es argument, for the relationship between each predictor and the dependent variable. You should specify a number of "es"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.
@@ -27,7 +27,7 @@
 #'
 #' @author Joel Le Forestier (joel.leforestier@@mail.utoronto.ca)
 #'
-#' @references Fialkowski, A. C. (2018). SimmCorrMix: Simulation of correlated data with multiple variable types including continuous and count mixture distributions. Comprehensive R Archive Network (CRAN).
+#' @references Fialkowski, A. C. (2018). SimmCorrMix: Simulation of correlated data with multiple variable types including continuous and count mixture distributions. `[`Computer software`]`. Comprehensive R Archive Network (CRAN).
 #'
 #' Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psychometrika, 43, 521-532.
 #'
@@ -116,27 +116,22 @@ simusim.multivars <- function(n, es, es1, es2,
     stop("You have specified the wrong number of predictors. Make sure to set the predictors argument to equal the number of predictors for which you have specified effect sizes. Additionally, ensure to specify effect sizes for predictors in order, beginning with es1, and not skipping any along the way.")
   }
 
-  # Throw a warning if the user has left n blank #
-  if(missing(n)) {
-    stop("Missing value for n. Please specify a sample size for your tests.")
-  }
-
   # Throw a warning if the sample size is greater than or equal to the population size #
   if(n >= popsize) {
     stop("Your sample size is greater than or equal to your population size. Please increase popsize or decrease n.")
   }
 
-  # Throw a warning if the number of iterations is 0 or negative #
+  # Throw a warning if the number of iterations is 0, negative, or not a whole number #
   if(iterations < 1 | round(iterations, 0) != iterations) {
     stop("You have specified an invalid number of iterations. Please specify a whole number greater than 0.")
   }
 
-  # Throw a warning if the sample size is 0 or negative #
+  # Throw a warning if the sample size is 0, negative, or not a whole number #
   if(n < 1 | round(n, 0) != n) {
     stop("You have specified an invalid sample size. Please specify a whole number greater than 0.")
   }
 
-  # Throw a warning if the population size is 0 or negative #
+  # Throw a warning if the population size is 0, negative, or not a whole number #
   if(popsize < 1 | round(popsize, 0) != popsize) {
     stop("You have specified an invalid population size. Please specify a whole number greater than 0.")
   }

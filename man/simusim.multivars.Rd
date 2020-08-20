@@ -17,7 +17,7 @@ simusim.multivars(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
 
 \item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number}
 
-\item{iterations}{How many times you would like to estimate your model in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.}
+\item{iterations}{How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.}
 
 \item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.}
 
@@ -54,7 +54,7 @@ simusim.multivars(n = 300, es = "d", es1 = .4, es2 = .04, es3 = .05, predictors 
 
 }
 \references{
-Fialkowski, A. C. (2018). SimmCorrMix: Simulation of correlated data with multiple variable types including continuous and count mixture distributions. Comprehensive R Archive Network (CRAN).
+Fialkowski, A. C. (2018). SimmCorrMix: Simulation of correlated data with multiple variable types including continuous and count mixture distributions. \code{[}Computer software\verb{]}. Comprehensive R Archive Network (CRAN).
 
 Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psychometrika, 43, 521-532.
 
