@@ -1,6 +1,6 @@
 Package: SimuSim
 Title: Simultaneous Power Analysis for a Set of Statistical Tests
-Version: 0.4.0
+Version: 0.5.0
 Authors@R: 
     person(given = "Joel Michel",
            family = "Le Forestier",
@@ -16,6 +16,7 @@ Imports: SimCorrMix (>= 0.1.1),
          tidyr (>= 1.0.3)
 Date/Publication: 2020-06-18
 License: See LICENSE.txt
+URL: https://doi.org/10.31219/osf.io/w96uk
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
