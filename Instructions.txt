@@ -1,23 +1,8 @@
 SimuSim: Simultaneous Power Analysis for a Set of Statistical Tests Instructions
 
-TO INSTALL THIS PACKAGE:
+TO INSTALL AND USE THIS PACKAGE:
 
-# Install the devtools package (if you don't already have it installed) which allows you to install packages from GitHub
-install.packages("devtools")
-
-# Install SimuSim
-devtools::install_github("joelleforestier/SimuSim")
-
-TO USE THIS PACKAGE:
-
-# Load SimuSim
-library(SimuSim)
-
-# If you want to assess power for multiple tests contained in a single model (e.g., separate predictors in a multiple regression), check the help page for simusim.multivars:
-?simusim.multivars
-
-# If you want to assess power for multiple tests contained in separate models (e.g., multiple t-tests), check the help page for simusim.multimodels:
-?simusim.multimodels
+SimuSim is an R package for simulating simultaneous power for a set of statistical tests. Information for how to download and use SimuSim is available here: https://doi.org/10.31219/osf.io/w96uk
 
 TO CITE THIS PACKAGE:
 
