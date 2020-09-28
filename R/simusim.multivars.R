@@ -179,7 +179,6 @@ simusim.multivars <- function(n, es, es1, es2,
   message("Simulating the population.")
 
   # Simulate the population #
-  set.seed(seed)
   invisible(capture.output(dist <- SimCorrMix::corrvar(n = popsize,
                    k_cont = 11,
                    method = "Fleishman",
@@ -187,7 +186,8 @@ simusim.multivars <- function(n, es, es1, es2,
                    vars = rep(1, times = 11),
                    skews = rep(0, times = 11),
                    skurts = rep(0, times = 11),
-                   rho = cortable)$Y_cont))
+                   rho = cortable,
+                   seed = seed)$Y_cont))
 
   dist <- data.frame(dist)
 

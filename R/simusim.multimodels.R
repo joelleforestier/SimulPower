@@ -182,7 +182,6 @@ simusim.multimodels <- function(n, es, es1, es2,
   message("Simulating the population.")
 
   # Simulate the population #
-  set.seed(seed)
   suppressWarnings(invisible(capture.output(dist <- SimCorrMix::corrvar(n = popsize,
                                                        k_cont = 20,
                                                        method = "Fleishman",
@@ -190,7 +189,8 @@ simusim.multimodels <- function(n, es, es1, es2,
                                                        vars = rep(1, times = 20),
                                                        skews = rep(0, times = 20),
                                                        skurts = rep(0, times = 20),
-                                                       rho = cortable)$Y_cont)))
+                                                       rho = cortable,
+                                                       seed = seed)$Y_cont)))
 
   dist <- data.frame(dist)
 
