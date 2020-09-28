@@ -2,6 +2,8 @@
 #'
 #' Simulate power to simultaneously detect predicted effects for a set of statistical tests in a single model with multiple predictors. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
 #'
+#' A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here.](https://doi.org/10.31219/osf.io/w96uk)
+#'
 #' When you use this function (and we hope you do!), please cite the package:
 #'
 #' Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests. https://doi.org/10.31219/osf.io/w96uk
@@ -218,23 +220,23 @@ simusim.multivars <- function(n, es, es1, es2,
     }
 
     if (predictors == 2) {
-      result <- rbind(result, data.frame(es1_result, es2_result))
+      result <- data.frame(es1_result, es2_result)
     } else if (predictors == 3) {
-      result <- rbind(result, data.frame(es1_result, es2_result, es3_result))
+      result <- data.frame(es1_result, es2_result, es3_result)
     } else if (predictors == 4) {
-      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result))
+      result <- data.frame(es1_result, es2_result, es3_result, es4_result)
     } else if (predictors == 5) {
-      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result))
+      result <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result)
     } else if (predictors == 6) {
-      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result))
+      result <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result)
     } else if (predictors == 7) {
-      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result))
+      result <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result)
     } else if (predictors == 8) {
-      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result))
+      result <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result)
     } else if (predictors == 9) {
-      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result, es9_result))
+      result <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result, es9_result)
     } else if (predictors == 10) {
-      result <- rbind(result, data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result, es9_result, es10_result))
+      result <- data.frame(es1_result, es2_result, es3_result, es4_result, es5_result, es6_result, es7_result, es8_result, es9_result, es10_result)
     }
 
   }

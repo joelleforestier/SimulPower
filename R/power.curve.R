@@ -4,6 +4,8 @@
 #'
 #' The power.curves function is the first step in the suggested SimuSim workflow. Start here to visualize the approximate simultaneous power space occupied by your set of tests, then use either \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels} with lrager numbers of iterations for final power calculations with more stable estimates.
 #'
+#' #' A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here.](https://doi.org/10.31219/osf.io/w96uk)
+#'
 #' When you use this function (and we hope you do!), please cite the package:
 #'
 #' Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests. https://doi.org/10.31219/osf.io/w96uk

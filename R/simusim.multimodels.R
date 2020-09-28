@@ -2,6 +2,8 @@
 #'
 #' Simulate power to simultaneously detect predicted effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables.
 #'
+#' #' A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here.](https://doi.org/10.31219/osf.io/w96uk)
+#'
 #' When you use this function (and we hope you do!), please cite the package:
 #'
 #' Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests. https://doi.org/10.31219/osf.io/w96uk
@@ -224,7 +226,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       es1_result <- model1$Pr...t..[2] < alpha
       es2_result <- model2$Pr...t..[2] < alpha
       round_results <- data.frame(es1_result, es2_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
     else if (models == 3) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
@@ -235,7 +237,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       es3_result <- model3$Pr...t..[2] < alpha
       round_results <- data.frame(es1_result, es2_result,
                                   es3_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
     else if (models == 4) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
@@ -248,7 +250,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       es4_result <- model4$Pr...t..[2] < alpha
       round_results <- data.frame(es1_result, es2_result,
                                   es3_result, es4_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
     else if (models == 5) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
@@ -263,7 +265,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       es5_result <- model5$Pr...t..[2] < alpha
       round_results <- data.frame(es1_result, es2_result,
                                   es3_result, es4_result, es5_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
     else if (models == 6) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
@@ -280,7 +282,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       es6_result <- model6$Pr...t..[2] < alpha
       round_results <- data.frame(es1_result, es2_result,
                                   es3_result, es4_result, es5_result, es6_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
     else if (models == 7) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
@@ -300,7 +302,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       round_results <- data.frame(es1_result, es2_result,
                                   es3_result, es4_result, es5_result, es6_result,
                                   es7_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
     else if (models == 8) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
@@ -322,7 +324,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       round_results <- data.frame(es1_result, es2_result,
                                   es3_result, es4_result, es5_result, es6_result,
                                   es7_result, es8_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
     else if (models == 9) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
@@ -346,7 +348,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       round_results <- data.frame(es1_result, es2_result,
                                   es3_result, es4_result, es5_result, es6_result,
                                   es7_result, es8_result, es9_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
     else if (models == 10) {
       model1 <- data.frame(summary(lm(dv1 ~ iv1, data = sample))$coefficients)
@@ -372,7 +374,7 @@ simusim.multimodels <- function(n, es, es1, es2,
       round_results <- data.frame(es1_result, es2_result,
                                   es3_result, es4_result, es5_result, es6_result,
                                   es7_result, es8_result, es9_result, es10_result)
-      result <- rbind(result, round_results)
+      result <- round_results
     }
   }
 

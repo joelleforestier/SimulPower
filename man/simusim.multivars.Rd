@@ -34,6 +34,8 @@ A dataframe containing a power estiamte, expressed as a decimal, for each of the
 Simulate power to simultaneously detect predicted effects for a set of statistical tests in a single model with multiple predictors. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
 }
 \details{
+A detailed walkthrough and set of vignettes for this and other SimuSim functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here.}
+
 When you use this function (and we hope you do!), please cite the package:
 
 Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests. https://doi.org/10.31219/osf.io/w96uk
