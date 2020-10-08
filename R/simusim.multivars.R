@@ -1,8 +1,6 @@
 #' Simulate simultaneous power for multiple tests in a single model
 #'
-#' Simulate power to simultaneously detect predicted effects for a set of statistical tests in a single model with multiple predictors. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable.
-#'
-#' A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here.](https://doi.org/10.31219/osf.io/w96uk)
+#' Simulate power to simultaneously detect predicted effects for a set of statistical tests in a single model with multiple predictors. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here.](https://doi.org/10.31219/osf.io/w96uk).
 #'
 #' When you use this function (and we hope you do!), please cite the package:
 #'
@@ -12,18 +10,20 @@
 #'
 #' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
 #'
-#' @usage simusim.multivars(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
+#' @usage simusim.multivars(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0, predictors = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05, bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
 #'
-#' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population.
-#' @param es Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for.
-#' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify effect size values for more that 2 predictors.
-#' @param null_effect For which, if any, of your predictors are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified.
-#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number
-#' @param iterations How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Default = 5,000. Accepts any whole number greater than 0.
-#' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.
-#' @param seed Set a seed to make your results reproducible. Default = 1. Accepts any number.
-#' @param es1...es10 The effect size, expressed in units specified in the es argument, for the relationship between each predictor and the dependent variable. You should specify a number of "es"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.
-#' @param iv1iv2_cov...iv9iv10_cov The relationships between each set of predictors, specified in correlation coefficients. Specifying relationships between predictors is optional unless your predictors, together, account for more than 100% of the variance in your DV, in which case you must specify relationships between your predictors to make that possible. Default = 0. Accepts any number between -1 and 1.
+#' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population. This argument has no default.
+#' @param es_units Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for. This argument has no default.
+#' @param predictors How many predictor variables would you like to simulate and ultimately calculate power for? Note that this argument is required if you specify effect size values for more that 2 predictors. Note also that this argument applies only to the number of slopes; intercepts are not counted. Accepts whole numbers in the range of 2 to 10. Default = 2.
+#' @param null_effect For which, if any, of your predictors are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. If you predict predictor 3 and predictor 4 to have null effects, you should specify null_effect = c(3, 4). Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified. Default = no null effects.
+#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100,000.
+#' @param iterations How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 5,000.
+#' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Accepts any number greater than 0 and less than 1. Default = 0.05.
+#' @param bonferroni Apply a bonferroni correction? This is suggested if you intend on interpreting the results of multiple tests individually, but not if you intend on assessing a single research question by triangulating across multiple tests (Le Forestier, Page-Gould, & Chasteen, Forthcoming). Accepts TRUE or FALSE. Default = FALSE.
+#' @param seed Set a seed to make your results reproducible. Accepts any number. Default = 1.
+#' @param es1...es10 The effect size, expressed in units specified in the es_units argument, for the relationship between each predictor and the dependent variable. You should specify a number of "es"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number. These arguments have no defaults.
+#' @param iv1iv2_cov...iv9iv10_cov The relationships between each set of predictors, specified in correlation coefficients. Specifying relationships between predictors is optional unless your predictors, together, account for more than 100% of the variance in your DV, in which case you must specify relationships between your predictors to make that possible. Accepts any number between -1 and 1. Default = 0.
+#' @param print_result Should power analysis results be printed to the console? Accepts TRUE or FALSE. Default = TRUE.
 #'
 #' @return A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously.
 #'
@@ -37,16 +37,16 @@
 #'
 #' @examples # A basic example, leaving all the defaults in place.
 #'
-#' simusim.multivars(n = 150, es = "r", es1 = .2, es2 = .15)
+#' simusim.multivars(n = 150, es_units = "r", es1 = .2, es2 = .15)
 #'
 #' # Another example, customizing additional parameters.
 #'
-#' simusim.multivars(n = 300, es = "d", es1 = .4, es2 = .04, es3 = .05, predictors = 3,
+#' simusim.multivars(n = 300, es_units = "d", es1 = .4, es2 = .04, es3 = .05, predictors = 3,
 #'      null_effect = c(2, 3), iv1iv2_cov = .2, popsize = 500000, alpha = .01, seed = 123)
 #'
 #' @export
 
-simusim.multivars <- function(n, es, es1, es2,
+simusim.multivars <- function(n, es_units, es1, es2,
                     es3 = 0, es4 = 0, es5 = 0, es6 = 0, es7 = 0, es8 = 0, es9 = 0, es10 = 0,
                     iv1iv2_cov = 0, iv1iv3_cov = 0, iv1iv4_cov = 0, iv1iv5_cov = 0, iv1iv6_cov = 0, iv1iv7_cov = 0, iv1iv8_cov = 0, iv1iv9_cov = 0, iv1iv10_cov = 0,
                     iv2iv3_cov = 0, iv2iv4_cov = 0, iv2iv5_cov = 0, iv2iv6_cov = 0, iv2iv7_cov = 0, iv2iv8_cov = 0, iv2iv9_cov = 0, iv2iv10_cov = 0,
@@ -57,7 +57,7 @@ simusim.multivars <- function(n, es, es1, es2,
                     iv7iv8_cov = 0, iv7iv9_cov = 0, iv7iv10_cov = 0,
                     iv8iv9_cov = 0, iv8iv10_cov = 0,
                     iv9iv10_cov = 0,
-                    predictors = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05, seed = 1) {
+                    predictors = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05, bonferroni = FALSE, seed = 1, print_result = TRUE) {
 
   # Throw a warning if the user has specified the wrong number of predictors #
   dummy_beta <- 0
@@ -138,9 +138,17 @@ simusim.multivars <- function(n, es, es1, es2,
     stop("You have specified an invalid population size. Please specify a whole number greater than 0.")
   }
 
-  # Throw a warning if es is not r, r2, or d #
-  if(es != "d" & es != "r" & es != "r2") {
-    stop("You have specified an invalid type effect size. Please specify whether you are inputting")
+  # Correct effect sizes and throw a warning if es_units is not r, r2, or d #
+  if(es_units == "D") {
+    es_units <- "d"
+  } else if (es_units == "R") {
+    es_units <- "r"
+  } else if (es_units == "R2") {
+    es_units <- "r2"
+  }
+
+  if(es_units != "d" & es_units != "r" & es_units != "r2") {
+    stop("You have specified an invalid type effect size. Please select from \"r\", \"d\", or \"r2\".")
   }
 
   # Throw a warning if the alpha level is not a number > 0 and < 1 #
@@ -151,6 +159,11 @@ simusim.multivars <- function(n, es, es1, es2,
   # Throw a warning if null effects are specified for predictors that aren't specified #
   if(max(null_effect) > predictors) {
     stop("You have specified a null effect for a predictor that isn't in your model. Make sure that the effects you specified as predicted nulls are included in the number of predictors you have specified.")
+  }
+
+  # Throw a warning if Bonferroni input isn't T or F #
+  if(bonferroni != TRUE & bonferroni != FALSE) {
+    stop("You have specified an invalid value for the bonferroni argument. Please specify whether you wish to bonferroni correct your p-values (bonferroni = TRUE) or not (bonferroni = FALSE). ")
   }
 
   # Generate the correlation matrix for the population #
@@ -167,10 +180,10 @@ simusim.multivars <- function(n, es, es1, es2,
                        es1, es2, es3, es4, es5, es6, es7, es8, es9, es10, 1), 11, 11)
 
   # Convert effect size into correlation coefficients #
-  if (es == "d") {
+  if (es_units == "d") {
     cortable[11,1:10] <- cortable[11,1:10] / sqrt(cortable[11,1:10]**2 + 4)
     cortable[1:10,11] <- cortable[1:10,11] / sqrt(cortable[1:10,11]**2 + 4)
-  } else if (es == "r2") {
+  } else if (es_units == "r2") {
     cortable[11,1:10] <- sqrt(cortable[11,1:10])
     cortable[1:10,11] <- sqrt(cortable[1:10,11])
   }
@@ -205,6 +218,11 @@ simusim.multivars <- function(n, es, es1, es2,
   # Set up for parallelization #
   doParallel::registerDoParallel(parallel::detectCores())
   `%dopar%` <- foreach::`%dopar%`
+
+  # Apply Bonferroni correction #
+  if (bonferroni == TRUE) {
+    alpha <- alpha / predictors
+  }
 
   # Run the model i times #
   result <- vector()
@@ -324,36 +342,35 @@ simusim.multivars <- function(n, es, es1, es2,
   result[result == "TRUE"] <- 1
 
   # Calculate power #
-  simultaneous_power <- mean(result$simultaneous)
-  es1_power <- mean(result$es1_result)
-  es2_power <- mean(result$es2_result)
+  simultaneous_power <- mean(result$simultaneous)*100
+  es1_power <- mean(result$es1_result)*100
+  es2_power <- mean(result$es2_result)*100
   if (predictors > 2) {
-    es3_power <- mean(result$es3_result)
+    es3_power <- mean(result$es3_result)*100
   }
   if (predictors > 3) {
-    es4_power <- mean(result$es4_result)
+    es4_power <- mean(result$es4_result)*100
   }
   if (predictors > 4) {
-    es5_power <- mean(result$es5_result)
+    es5_power <- mean(result$es5_result)*100
   }
   if (predictors > 5) {
-    es6_power <- mean(result$es6_result)
+    es6_power <- mean(result$es6_result)*100
   }
   if (predictors > 6) {
-    es7_power <- mean(result$es7_result)
+    es7_power <- mean(result$es7_result)*100
   }
   if (predictors > 7) {
-    es8_power <- mean(result$es8_result)
+    es8_power <- mean(result$es8_result)*100
   }
   if (predictors > 8) {
-    es9_power <- mean(result$es9_result)
+    es9_power <- mean(result$es9_result)*100
   }
   if (predictors > 9) {
-    es10_power <- mean(result$es10_result)
+    es10_power <- mean(result$es10_result)*100
   }
 
   # Summarize results
-
   if (predictors == 2) {
     power <- data.frame(es1_power, es2_power, simultaneous_power)
   } else if ( predictors == 3) {
@@ -374,5 +391,14 @@ simusim.multivars <- function(n, es, es1, es2,
     power <- data.frame(es1_power, es2_power, es3_power, es4_power, es5_power, es6_power, es7_power, es8_power, es9_power, es10_power, simultaneous_power)
   }
 
-  return(power)
+  if(print_result == TRUE) {
+    for (p in 1:predictors) {
+      cat(paste0("Predictor ", p, " Power: ", power[p], "%"), sep = "\n")
+      }
+    cat(paste0("Simultaneous Power: ", power[length(power)], "%"))
+    }
+
+  invisible(power)
+
 }
+

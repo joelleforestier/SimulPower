@@ -4,38 +4,40 @@
 \alias{power.curve}
 \title{Simulate and visualize simultaneous power curves}
 \usage{
-power.curve(n = NULL, es = NULL, es1 = NULL, es2 = NULL)
+power.curve(method = NULL, min = NULL, max = NULL, increment = 20, thresholds = c(80, 90, 95), es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0, iv1iv2_cov...iv9iv10_cov = 0, predictors = 2, models = 2, null_effect = 0, popsize = 100000, iterations = 1000, alpha = .05, bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
 }
 \arguments{
-\item{method}{Specify which SimuSim function you would like to use to computer simultaneous power. Accepts either "simusim.multivars" or "simusim.multimodels".}
+\item{method}{Specify which SimuSim function you would like to use to computer simultaneous power. Accepts either "simusim.multivars" or "simusim.multimodels". This argument has no default.}
 
-\item{min}{Set the minimum sample size for which you would like to estimate simultaneous power. Accepts any positive number smaller than your population and your maximum sample size.}
+\item{min}{Set the minimum sample size for which you would like to estimate simultaneous power. Accepts any positive number smaller than your population and your maximum sample size. This argument has no default.}
 
-\item{max}{Set the maximum sample size for which you would like to estimate simultaneous power. Accepts any positive number smaller than your population and larger than your maximum sample size.}
+\item{max}{Set the maximum sample size for which you would like to estimate simultaneous power. Accepts any positive number smaller than your population and larger than your maximum sample size. This argument has no default.}
 
-\item{increment}{Set the increments by which you would like the sample size to increase between power analyses. Default = 20, accepts any positive whole number.}
+\item{increment}{Set the increments by which you would like the sample size to increase between power analyses. Accepts any positive whole number. Default = 20.}
 
-\item{thresholds}{Set the power thresholds for which you would like sample size estimates printed. Accepts either any single number between 0 and 1 or a vector of numbers between 0 and 1. Default = c(.80, .90, .95).}
+\item{thresholds}{Set the power thresholds for which you would like sample size estimates printed. Accepts either any single number between 0 and 100 or a vector of numbers between 0 and 100. Default = c(80, 90, 95).}
 
-\item{es}{Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for.}
+\item{es_units}{Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for. This argument has no default.}
 
-\item{predictors}{If you are estimating power for multiple tests in a single model, how many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify effect size values for more that 2 predictors.}
+\item{predictors}{If you are estimating power for multiple tests in a single model, how many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Note that this argument is required if you specify effect size values for more that 2 predictors. Accepts whole numbers in the range of 2 to 10. Default = 2.}
 
 \item{models}{If you are estimating power for tests in separate models, how many models would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify effect size values for more that 2 predictors.}
 
-\item{null_effect}{For which, if any, of your predictors or models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified.}
+\item{null_effect}{For which, if any, of your predictors or models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified. Default = no null effects.}
 
-\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Default = 100,000. Accepts any positive whole number}
+\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100,000.}
 
-\item{iterations}{How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Default = 1,000. Accepts any whole number greater than 0.}
+\item{iterations}{How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 1,000.}
 
-\item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Default = 0.05. Accepts any number greater than 0 and less than 1.}
+\item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Accepts any number greater than 0 and less than 1. Default = 0.05.}
 
-\item{seed}{Set a seed to make your results reproducible. Default = 1. Accepts any number.}
+\item{bonferroni}{Apply a bonferroni correction? This is suggested if you intend on interpreting the results of multiple tests individually, but not if you intend on assessing a single research question by triangulating across multiple tests (Le Forestier, Page-Gould, & Chasteen, Forthcoming). Accepts TRUE or FALSE. Default = FALSE.}
 
-\item{es1...es10}{The effect size, expressed in units specified in the es argument, for the relationship between each predictor and the dependent variable. You should specify a number of "es"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number.}
+\item{seed}{Set a seed to make your results reproducible. Accepts any number. Default = 1.}
 
-\item{iv1iv2_cov...iv9iv10_cov}{The relationships between each set of predictors, specified in correlation coefficients. Specifying relationships between predictors is optional unless your predictors, together, account for more than 100\% of the variance in your DV, in which case you must specify relationships between your predictors to make that possible. Default = 0. Accepts any number between -1 and 1.}
+\item{es1...es10}{The effect size, expressed in units specified in the es_units argument, for the relationship between each predictor and the dependent variable. You should specify a number of "es"s equal to the number you specified in the "predictors" argument. That is, if you set predictors to equal 4, you should supply values for es1, es2, es3, and es4. You should always specify these in order, beginning with es1, and not skipping any. Accepts any number. These arguments have no defaults.}
+
+\item{iv1iv2_cov...iv9iv10_cov}{The relationships between each set of predictors, specified in correlation coefficients. Specifying relationships between predictors is optional unless your predictors, together, account for more than 100\% of the variance in your DV, in which case you must specify relationships between your predictors to make that possible. Accepts any number between -1 and 1. Default = 0.}
 }
 \value{
 A plot of power curves and a set of sample size estimates for default or user-defined power thresholds.
@@ -43,12 +45,10 @@ A plot of power curves and a set of sample size estimates for default or user-de
 A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously.
 }
 \description{
-Simulate and visualize individual and simultaneous power at a range of sample sizes of a set of statistical tests. Simultaneous power simulations are conducted using \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels}.
+Simulate and visualize individual and simultaneous power at a range of sample sizes of a set of statistical tests. Simultaneous power simulations are conducted using \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels}. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here.}
 }
 \details{
 The power.curves function is the first step in the suggested SimuSim workflow. Start here to visualize the approximate simultaneous power space occupied by your set of tests, then use either \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels} with lrager numbers of iterations for final power calculations with more stable estimates.
-
-#' A detailed walkthrough and set of vignettes for this and other SimuSim functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here.}
 
 When you use this function (and we hope you do!), please cite the package:
 
@@ -62,12 +62,12 @@ Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistica
 # An example using simusim.multivars
 
 power.curve(method = "simusim.multivars", min = 200, max = 500, predictors = 3,
-es = "d", es1 = .35, es2 = .45, es3 = .50)
+es_units = "d", es1 = .35, es2 = .45, es3 = .50)
 
 # An example using simusim.multimodels
 
 power.curve(method = "simusim.multimodels", min = 100, max = 400, increment = 40, models = 7,
-es = "r2", es1 = .05, es2 = .06, es3 = .08, es4 = .06, es5 = .08, es6 = .07, es7 = .04)
+es_units = "r2", es1 = .05, es2 = .06, es3 = .08, es4 = .06, es5 = .08, es6 = .07, es7 = .04)
 
 }
 \references{
