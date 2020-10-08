@@ -147,7 +147,7 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
     palette <- append(color_options[1:predictors], "#000000") #simultaneous power is always black
 
     longdata <- tidyr::pivot_longer(data = data,
-                                    cols = -y,
+                                    cols = -n,
                                     names_to = "param",
                                     values_to = "estimate")
     names(longdata) <- c("n", "parameter", "power")
@@ -161,7 +161,7 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
       ggplot2::scale_color_manual(name = "Parameter",
                                   values = palette) +
       ggplot2::geom_line(ggplot2::aes(color = parameter), size = 1) +
-      ggplot2::scale_y_continuous(limits = c(0, 1),
+      ggplot2::scale_y_continuous(limits = c(0, 100),
                          breaks=c(0, 20, 40, 60, 80, 100),
                          labels=c("0%", "20%", "40%", "60%", "80%", "100%")) +
       ggplot2::xlab("Sample Size") +
@@ -207,7 +207,7 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
     palette <- append(color_options[1:models], "#000000") #simultaneous power is always black
 
     longdata <- tidyr::pivot_longer(data = data,
-                                    cols = -y,
+                                    cols = -n,
                                     names_to = "param",
                                     values_to = "estimate")
     names(longdata) <- c("n", "model", "power")
@@ -221,7 +221,7 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
       ggplot2::scale_color_manual(name = "Model",
                                   values = palette) +
       ggplot2::geom_line(ggplot2::aes(color = model), size = 1) +
-      ggplot2::scale_y_continuous(limits = c(0, 1),
+      ggplot2::scale_y_continuous(limits = c(0, 100),
                                   breaks=c(0, 20, 40, 60, 80, 100),
                                   labels=c("0%", "20%", "40%", "60%", "80%", "100%")) +
       ggplot2::xlab("Sample Size") +
@@ -236,13 +236,13 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
       thresh_n <- append(thresh_n, NA)
       thresh_n <- append(thresh_n, NA)
     } else {
-      thresh_n <- append(thresh_n, data$y[which(data$simultaneous_power >= thresholds[x])[1] - 1])
-      thresh_n <- append(thresh_n, data$y[which(data$simultaneous_power >= thresholds[x])[1]])
+      thresh_n <- append(thresh_n, data$n[which(data$simultaneous_power >= thresholds[x])[1] - 1])
+      thresh_n <- append(thresh_n, data$n[which(data$simultaneous_power >= thresholds[x])[1]])
     }
     if (is.na(thresh_n[[x * 2 - 1]]) | is.na(thresh_n[[x * 2]])) {
-      message(paste0(thresholds[x], "% power was not reached between n = ", min, " and n = ", max))
+      message(paste0("The ", thresholds[x], "% simultaneous power threshold was not crossed."))
     } else {
-      cat(thresholds[x], "% simultaneous power was reached between n = ", thresh_n[[x * 2 - 1]], " and n = ", thresh_n[[x * 2]], "\n", sep = "")
+      cat("The ", thresholds[x], "% simultaneous power threshold was crossed between n = ", thresh_n[[x * 2 - 1]], " and n = ", thresh_n[[x * 2]], "\n", sep = "")
     }
   }
 
