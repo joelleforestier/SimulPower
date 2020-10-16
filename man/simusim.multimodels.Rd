@@ -4,7 +4,9 @@
 \alias{simusim.multimodels}
 \title{Simulate simultaneous power for multiple tests in separate models}
 \usage{
-simusim.multimodels(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0, models = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05, bonferroni = FALSE, seed = 1)
+simusim.multimodels(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0,
+models = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05,
+bonferroni = FALSE, seed = 1)
 }
 \arguments{
 \item{n}{Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive whole number smaller than your population. This argument has no default.}
@@ -15,9 +17,9 @@ simusim.multimodels(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es1
 
 \item{null_effect}{For which, if any, of your models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which models are predicted nulls by setting this argument equal to the number(s) corresponding to the models you hypothesize to be null. Accepts either a single whole number between 1 and the number of models you have specified or a vector of numbers between 1 and the the number of models you have specified. Default = no null effects.}
 
-\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100,000.}
+\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100000.}
 
-\item{iterations}{How many times you would like to run your models in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 5,000.}
+\item{iterations}{How many times you would like to run your models in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 5000.}
 
 \item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Accepts any number greater than 0 and less than 1. Default = 0.05.}
 
@@ -33,7 +35,7 @@ simusim.multimodels(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es1
 A dataframe containing a power estiamte, expressed as a decimal, for each of the models individually, and for all the models simultaneously.
 }
 \description{
-Simulate power to simultaneously detect predicted effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here.}.
+Simulate power to simultaneously detect predicted effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here}.
 }
 \details{
 When you use this function (and we hope you do!), please cite the package:

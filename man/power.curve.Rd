@@ -4,7 +4,11 @@
 \alias{power.curve}
 \title{Simulate and visualize simultaneous power curves}
 \usage{
-power.curve(method = NULL, min = NULL, max = NULL, increment = 20, thresholds = c(80, 90, 95), es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0, iv1iv2_cov...iv9iv10_cov = 0, predictors = 2, models = 2, null_effect = 0, popsize = 100000, iterations = 1000, alpha = .05, bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
+power.curve(method = NULL, min = NULL, max = NULL, increment = 20,
+thresholds = c(80, 90, 95), es_units = NULL, es1 = NULL, es2 = NULL,
+es3...es10 = 0, iv1iv2_cov...iv9iv10_cov = 0, predictors = 2,
+models = 2, null_effect = 0, popsize = 100000, iterations = 1000,
+alpha = .05, bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
 }
 \arguments{
 \item{method}{Specify which SimuSim function you would like to use to computer simultaneous power. Accepts either "simusim.multivars" or "simusim.multimodels". This argument has no default.}
@@ -25,9 +29,9 @@ power.curve(method = NULL, min = NULL, max = NULL, increment = 20, thresholds = 
 
 \item{null_effect}{For which, if any, of your predictors or models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified. Default = no null effects.}
 
-\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100,000.}
+\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100000.}
 
-\item{iterations}{How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 1,000.}
+\item{iterations}{How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 1000.}
 
 \item{alpha}{Set your alpha level. This is the threshold below which p-values will be considered significant. Accepts any number greater than 0 and less than 1. Default = 0.05.}
 
@@ -45,7 +49,7 @@ A plot of power curves and a set of sample size estimates for default or user-de
 A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously.
 }
 \description{
-Simulate and visualize individual and simultaneous power at a range of sample sizes of a set of statistical tests. Simultaneous power simulations are conducted using \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels}. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here.}
+Simulate and visualize individual and simultaneous power at a range of sample sizes of a set of statistical tests. Simultaneous power simulations are conducted using \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels}. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here}.
 }
 \details{
 The power.curves function is the first step in the suggested SimuSim workflow. Start here to visualize the approximate simultaneous power space occupied by your set of tests, then use either \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels} with lrager numbers of iterations for final power calculations with more stable estimates.

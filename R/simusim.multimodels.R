@@ -1,6 +1,6 @@
 #' Simulate simultaneous power for multiple tests in separate models
 #'
-#' Simulate power to simultaneously detect predicted effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here.](https://doi.org/10.31219/osf.io/w96uk).
+#' Simulate power to simultaneously detect predicted effects for a set of statistical tests in separate bivariate models. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for up to 10 bivariate models with single independent variables and single dependent variables. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here](https://doi.org/10.31219/osf.io/w96uk).
 #'
 #' When you use this function (and we hope you do!), please cite the package:
 #'
@@ -10,14 +10,16 @@
 #'
 #' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
 #'
-#' @usage simusim.multimodels(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0, models = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05, bonferroni = FALSE, seed = 1)
+#' @usage simusim.multimodels(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0,
+#' models = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05,
+#' bonferroni = FALSE, seed = 1)
 #'
 #' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive whole number smaller than your population. This argument has no default.
 #' @param es_units Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for. This argument has no default.
 #' @param models How many models would you like to simulate and ultimately calculate power for? Note that this argument is required if you specify more than 2 effect sizes. Accepts whole numbers in the range of 2 to 10. Default = 2.
 #' @param null_effect For which, if any, of your models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which models are predicted nulls by setting this argument equal to the number(s) corresponding to the models you hypothesize to be null. Accepts either a single whole number between 1 and the number of models you have specified or a vector of numbers between 1 and the the number of models you have specified. Default = no null effects.
-#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100,000.
-#' @param iterations How many times you would like to run your models in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 5,000.
+#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100000.
+#' @param iterations How many times you would like to run your models in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 5000.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Accepts any number greater than 0 and less than 1. Default = 0.05.
 #' @param bonferroni Apply a bonferroni correction? This is suggested if you intend on interpreting the results of multiple tests individually, but not if you intend on assessing a single research question by triangulating across multiple tests (Le Forestier, Page-Gould, & Chasteen, Forthcoming). Accepts TRUE or FALSE. Default = FALSE.
 #' @param seed Set a seed to make your results reproducible. Accepts any number. Default = 1.
@@ -106,6 +108,55 @@ simusim.multimodels <- function(n, es_units, es1, es2,
 
   if(specified_models["0"] != (11 - models)) {
     stop("You have specified the wrong number of models. Make sure to set the models argument to equal the number of models for which you have specified effect sizes. Additionally, ensure to specify effect sizes for models in order, beginning with es1, and not skipping any along the way. ")
+  }
+
+  # Throw a warning if the user has specified the predictors out of order #
+  `%notin%` <- Negate(`%in%`)
+
+  if (
+    ((es4 != 0 | 4 %in% null_effect) &
+     (es3 == 0 & 3 %notin% null_effect)) |
+
+    ((es5 != 0 | 5 %in% null_effect) &
+     ((es3 == 0 & 3 %notin% null_effect) |
+      (es4 == 0 & 4 %notin% null_effect))) |
+
+    ((es6 != 0 | 6 %in% null_effect) &
+     ((es3 == 0 & 3 %notin% null_effect) |
+      (es4 == 0 & 4 %notin% null_effect) |
+      (es5 == 0 & 5 %notin% null_effect))) |
+
+    ((es7 != 0 | 7 %in% null_effect) &
+     ((es3 == 0 & 3 %notin% null_effect) |
+      (es4 == 0 & 4 %notin% null_effect) |
+      (es5 == 0 & 5 %notin% null_effect) |
+      (es6 == 0 & 6 %notin% null_effect))) |
+
+    ((es8 != 0 | 8 %in% null_effect) &
+     ((es3 == 0 & 3 %notin% null_effect) |
+      (es4 == 0 & 4 %notin% null_effect) |
+      (es5 == 0 & 5 %notin% null_effect) |
+      (es6 == 0 & 6 %notin% null_effect) |
+      (es7 == 0 & 7 %notin% null_effect))) |
+
+    ((es9 != 0 | 9 %in% null_effect) &
+     ((es3 == 0 & 3 %notin% null_effect) |
+      (es4 == 0 & 4 %notin% null_effect) |
+      (es5 == 0 & 5 %notin% null_effect) |
+      (es6 == 0 & 6 %notin% null_effect) |
+      (es7 == 0 & 7 %notin% null_effect) |
+      (es8 == 0 & 8 %notin% null_effect))) |
+
+    ((es10 != 0 | 9 %in% null_effect) &
+     ((es3 == 0 & 3 %notin% null_effect) |
+      (es4 == 0 & 4 %notin% null_effect) |
+      (es5 == 0 & 5 %notin% null_effect) |
+      (es6 == 0 & 6 %notin% null_effect) |
+      (es7 == 0 & 7 %notin% null_effect) |
+      (es8 == 0 & 8 %notin% null_effect) |
+      (es9 == 0 & 9 %notin% null_effect)))
+  ) {
+    stop("Please be sure to specify the predictors in order. For example, if you aim to specify four effect sizes, you should assign them to es1, es2, es3, and es4.")
   }
 
   # Throw a warning if the sample size is greater than or equal to the population size #

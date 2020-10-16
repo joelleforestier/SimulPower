@@ -1,6 +1,6 @@
 #' Simulate and visualize simultaneous power curves
 #'
-#' Simulate and visualize individual and simultaneous power at a range of sample sizes of a set of statistical tests. Simultaneous power simulations are conducted using \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels}. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here.](https://doi.org/10.31219/osf.io/w96uk)
+#' Simulate and visualize individual and simultaneous power at a range of sample sizes of a set of statistical tests. Simultaneous power simulations are conducted using \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels}. A detailed walkthrough and set of vignettes for this and other SimuSim functions is available [here](https://doi.org/10.31219/osf.io/w96uk).
 #'
 #' The power.curves function is the first step in the suggested SimuSim workflow. Start here to visualize the approximate simultaneous power space occupied by your set of tests, then use either \link[SimuSim]{simusim.multivars} or \link[SimuSim]{simusim.multimodels} with lrager numbers of iterations for final power calculations with more stable estimates.
 #'
@@ -12,7 +12,11 @@
 #'
 #' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
 #'
-#' @usage power.curve(method = NULL, min = NULL, max = NULL, increment = 20, thresholds = c(80, 90, 95), es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0, iv1iv2_cov...iv9iv10_cov = 0, predictors = 2, models = 2, null_effect = 0, popsize = 100000, iterations = 1000, alpha = .05, bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
+#' @usage power.curve(method = NULL, min = NULL, max = NULL, increment = 20,
+#' thresholds = c(80, 90, 95), es_units = NULL, es1 = NULL, es2 = NULL,
+#' es3...es10 = 0, iv1iv2_cov...iv9iv10_cov = 0, predictors = 2,
+#' models = 2, null_effect = 0, popsize = 100000, iterations = 1000,
+#' alpha = .05, bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
 #'
 #' @param method Specify which SimuSim function you would like to use to computer simultaneous power. Accepts either "simusim.multivars" or "simusim.multimodels". This argument has no default.
 #' @param min Set the minimum sample size for which you would like to estimate simultaneous power. Accepts any positive number smaller than your population and your maximum sample size. This argument has no default.
@@ -23,8 +27,8 @@
 #' @param predictors If you are estimating power for multiple tests in a single model, how many predictor variables would you like to simulate and ultimately calculate power for? Default = 2. Note that this argument is required if you specify effect size values for more that 2 predictors. Accepts whole numbers in the range of 2 to 10. Default = 2.
 #' @param models If you are estimating power for tests in separate models, how many models would you like to simulate and ultimately calculate power for? Default = 2. Accepts whole numbers in the range of 2 to 10. Note that this argument is required if you specify effect size values for more that 2 predictors.
 #' @param null_effect For which, if any, of your predictors or models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified. Default = no null effects.
-#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100,000.
-#' @param iterations How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 1,000.
+#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100000.
+#' @param iterations How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 1000.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Accepts any number greater than 0 and less than 1. Default = 0.05.
 #' @param bonferroni Apply a bonferroni correction? This is suggested if you intend on interpreting the results of multiple tests individually, but not if you intend on assessing a single research question by triangulating across multiple tests (Le Forestier, Page-Gould, & Chasteen, Forthcoming). Accepts TRUE or FALSE. Default = FALSE.
 #' @param seed Set a seed to make your results reproducible. Accepts any number. Default = 1.
@@ -66,6 +70,14 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
                               predictors = 2, models = 2, null_effect = 0, popsize = 100000, iterations = 1000, alpha = .05, bonferroni = FALSE, seed = 1) {
 
   # Throw a warning if method is wrong or missing #
+  if(method == "multivars") {
+    method <- "simusim.multivars"
+  }
+
+  if(method == "multimodels") {
+    method <- "simusim.multimodels"
+  }
+
   if(method != "simusim.multivars" & method != "simusim.multimodels") {
     stop("You have not correctly specified which SimuSim function you would like to use to estimate simutaneous power.")
   }
@@ -104,7 +116,7 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
     data <- data.frame()
 
     # let them know it's working
-    message(paste("Simulating", (max - min) / increment + 1, "populations and performing", iterations, "sets of tests in each. This may take a few minutes."))
+    message(paste("Performing", (max - min) / increment + 1, "simultaneous power analyses with", iterations, "sets of tests in each. This may take a few minutes."))
 
     # run the power analyses #
     for (n in seq(from=min, to=max, by=increment)) {
@@ -164,6 +176,8 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
       ggplot2::scale_y_continuous(limits = c(0, 100),
                          breaks=c(0, 20, 40, 60, 80, 100),
                          labels=c("0%", "20%", "40%", "60%", "80%", "100%")) +
+      ggplot2::scale_x_continuous(limits = c(min, max),
+                                  breaks = seq(min, max, by = increment)) +
       ggplot2::xlab("Sample Size") +
       ggplot2::ylab("Power") +
       ggplot2::theme_minimal()
@@ -173,7 +187,7 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
     data <- data.frame()
 
     # let them know it's working
-    message(paste("Simulating", (max - min) / increment + 1, "populations and performing", iterations, "sets of tests in each. This may take a few minutes."))
+    message(paste("Performing", floor((max - min) / increment + 1), "simultaneous power analyses with", iterations, "sets of tests in each. This may take a few minutes."))
 
     # run the power analyses #
     for (n in seq(from=min, to=max, by=increment)) {
@@ -213,7 +227,7 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
     names(longdata) <- c("n", "model", "power")
 
     for(t in 1:models) {
-      longdata$model[longdata$model == paste0("es", t, "_power")] <- paste("model", t)
+      longdata$model[longdata$model == paste0("model", t, "_power")] <- paste("model", t)
     }
     longdata$model[longdata$model == "simultaneous_power"] <- "simultaneous power"
 
@@ -224,6 +238,8 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
       ggplot2::scale_y_continuous(limits = c(0, 100),
                                   breaks=c(0, 20, 40, 60, 80, 100),
                                   labels=c("0%", "20%", "40%", "60%", "80%", "100%")) +
+      ggplot2::scale_x_continuous(limits = c(min, max),
+                                   breaks = seq(min, max, by = increment)) +
       ggplot2::xlab("Sample Size") +
       ggplot2::ylab("Power") +
       ggplot2::theme_minimal()
@@ -240,7 +256,7 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
       thresh_n <- append(thresh_n, data$n[which(data$simultaneous_power >= thresholds[x])[1]])
     }
     if (is.na(thresh_n[[x * 2 - 1]]) | is.na(thresh_n[[x * 2]])) {
-      message(paste0("The ", thresholds[x], "% simultaneous power threshold was not crossed."))
+      cat("The ", thresholds[x], "% simultaneous power threshold was not crossed.", "\n", sep = "")
     } else {
       cat("The ", thresholds[x], "% simultaneous power threshold was crossed between n = ", thresh_n[[x * 2 - 1]], " and n = ", thresh_n[[x * 2]], "\n", sep = "")
     }
