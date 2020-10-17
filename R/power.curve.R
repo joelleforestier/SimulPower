@@ -12,11 +12,12 @@
 #'
 #' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
 #'
-#' @usage power.curve(method = NULL, min = NULL, max = NULL, increment = 20,
-#' thresholds = c(80, 90, 95), es_units = NULL, es1 = NULL, es2 = NULL,
-#' es3...es10 = 0, iv1iv2_cov...iv9iv10_cov = 0, predictors = 2,
-#' models = 2, null_effect = 0, popsize = 100000, iterations = 1000,
-#' alpha = .05, bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
+#' @usage power.curve(method = NULL, min = NULL, max = NULL,
+#' increment = 20, thresholds = c(80, 90, 95), es_units = NULL,
+#' es1 = NULL, es2 = NULL, es3...es10 = 0,
+#' iv1iv2_cov...iv9iv10_cov = 0, predictors = 2, models = 2,
+#' null_effect = 0, popsize = 100000, iterations = 1000, alpha = .05,
+#' bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
 #'
 #' @param method Specify which SimuSim function you would like to use to computer simultaneous power. Accepts either "simusim.multivars" or "simusim.multimodels". This argument has no default.
 #' @param min Set the minimum sample size for which you would like to estimate simultaneous power. Accepts any positive number smaller than your population and your maximum sample size. This argument has no default.
@@ -180,7 +181,8 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
                                   breaks = seq(min, max, by = increment)) +
       ggplot2::xlab("Sample Size") +
       ggplot2::ylab("Power") +
-      ggplot2::theme_minimal()
+      ggplot2::theme_minimal() +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
 
   } else if (method == "simusim.multimodels") {
 
@@ -242,7 +244,8 @@ power.curve <- function(method, min, max, increment = 20, thresholds = c(80, 90,
                                    breaks = seq(min, max, by = increment)) +
       ggplot2::xlab("Sample Size") +
       ggplot2::ylab("Power") +
-      ggplot2::theme_minimal()
+      ggplot2::theme_minimal() +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
   }
 
   # print the sample size estimates #

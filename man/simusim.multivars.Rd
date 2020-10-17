@@ -4,9 +4,11 @@
 \alias{simusim.multivars}
 \title{Simulate simultaneous power for multiple tests in a single model}
 \usage{
-simusim.multivars(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0,
-predictors = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05,
-bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
+simusim.multivars(n = NULL, es_units = NULL,
+es1 = NULL, es2 = NULL, es3...es10 = 0, predictors = 2,
+null_effect = 0, popsize = 100000, iterations = 5000,
+alpha = .05, bonferroni = FALSE, seed = 1,
+iv1iv2_cov...iv9iv10_cov = 0)
 }
 \arguments{
 \item{n}{Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population. This argument has no default.}

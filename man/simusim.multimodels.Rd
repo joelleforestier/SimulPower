@@ -4,9 +4,10 @@
 \alias{simusim.multimodels}
 \title{Simulate simultaneous power for multiple tests in separate models}
 \usage{
-simusim.multimodels(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0,
-models = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05,
-bonferroni = FALSE, seed = 1)
+simusim.multimodels(n = NULL, es_units = NULL,
+es1 = NULL, es2 = NULL, es3...es10 = 0, models = 2,
+null_effect = 0, popsize = 100000, iterations = 5000,
+alpha = .05, bonferroni = FALSE, seed = 1)
 }
 \arguments{
 \item{n}{Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive whole number smaller than your population. This argument has no default.}

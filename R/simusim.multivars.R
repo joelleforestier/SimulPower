@@ -10,9 +10,11 @@
 #'
 #' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. L. (Forthcoming). Statistical power for a set of tests.
 #'
-#' @usage simusim.multivars(n = NULL, es_units = NULL, es1 = NULL, es2 = NULL, es3...es10 = 0,
-#' predictors = 2, null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05,
-#' bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
+#' @usage simusim.multivars(n = NULL, es_units = NULL,
+#' es1 = NULL, es2 = NULL, es3...es10 = 0, predictors = 2,
+#' null_effect = 0, popsize = 100000, iterations = 5000,
+#' alpha = .05, bonferroni = FALSE, seed = 1,
+#' iv1iv2_cov...iv9iv10_cov = 0)
 #'
 #' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population. This argument has no default.
 #' @param es_units Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for. This argument has no default.

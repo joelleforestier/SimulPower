@@ -4,11 +4,12 @@
 \alias{power.curve}
 \title{Simulate and visualize simultaneous power curves}
 \usage{
-power.curve(method = NULL, min = NULL, max = NULL, increment = 20,
-thresholds = c(80, 90, 95), es_units = NULL, es1 = NULL, es2 = NULL,
-es3...es10 = 0, iv1iv2_cov...iv9iv10_cov = 0, predictors = 2,
-models = 2, null_effect = 0, popsize = 100000, iterations = 1000,
-alpha = .05, bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
+power.curve(method = NULL, min = NULL, max = NULL,
+increment = 20, thresholds = c(80, 90, 95), es_units = NULL,
+es1 = NULL, es2 = NULL, es3...es10 = 0,
+iv1iv2_cov...iv9iv10_cov = 0, predictors = 2, models = 2,
+null_effect = 0, popsize = 100000, iterations = 1000, alpha = .05,
+bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
 }
 \arguments{
 \item{method}{Specify which SimuSim function you would like to use to computer simultaneous power. Accepts either "simusim.multivars" or "simusim.multimodels". This argument has no default.}
