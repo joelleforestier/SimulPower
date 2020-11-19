@@ -1,14 +1,14 @@
-SimuSim: Simultaneous Power Analysis for a Set of Statistical Tests Instructions
+SimulPower: Simultaneous Power Analysis for a Set of Statistical Tests Instructions
 
 TO INSTALL AND USE THIS PACKAGE:
 
-SimuSim is an R package for simulating simultaneous power for a set of statistical tests. Information for how to download and use SimuSim is available here: https://doi.org/10.31219/osf.io/w96uk
+SimulPower is an R package for simulating simultaneous power for a set of statistical tests. Information for how to download and use SimulPower is available here: https://doi.org/10.31219/osf.io/w96uk
 
 TO CITE THIS PACKAGE:
 
 When you use this function (and we hope you do!), please cite the package:
 
-Le Forestier, J. M. (2020). SimuSim: Simultaneous power analysis for a set of statistical tests. https://doi.org/10.31219/osf.io/w96uk
+Le Forestier, J. M. (2020). SimulPower: Simultaneous power analysis for a set of statistical tests. https://doi.org/10.31219/osf.io/w96uk
 
 and/or cite the accompanying paper:
 
