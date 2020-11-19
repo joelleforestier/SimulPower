@@ -284,9 +284,6 @@ pwrMultimodels <- function(n, es_units, es1, es2,
     cortable[7,8] <- cortable[7,8] / sqrt(cortable[7,8]**2 + 4)
     cortable[8,7] <- cortable[8,7] / sqrt(cortable[8,7]**2 + 4)
 
-    cortable[7,8] <- cortable[7,8] / sqrt(cortable[7,8]**2 + 4)
-    cortable[8,7] <- cortable[8,7] / sqrt(cortable[8,7]**2 + 4)
-
     cortable[9,10] <- cortable[9,10] / sqrt(cortable[9,10]**2 + 4)
     cortable[10,9] <- cortable[10,9] / sqrt(cortable[10,9]**2 + 4)
 
@@ -314,9 +311,6 @@ pwrMultimodels <- function(n, es_units, es1, es2,
 
     cortable[5,6] <- sqrt(cortable[5,6])
     cortable[6,5] <- sqrt(cortable[6,5])
-
-    cortable[7,8] <- sqrt(cortable[7,8])
-    cortable[8,7] <- sqrt(cortable[8,7])
 
     cortable[7,8] <- sqrt(cortable[7,8])
     cortable[8,7] <- sqrt(cortable[8,7])
