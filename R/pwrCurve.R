@@ -177,7 +177,7 @@ pwrCurve <- function(method, min, max, increment = 20, thresholds = c(80, 90, 95
     data <- data.frame()
 
     # let them know it's working
-    message(paste("Performing", (max - min) / increment + 1, "simultaneous power analyses with", iterations, "sets of tests in each. This may take a few minutes."))
+    message(paste("Performing", floor((max - min) / increment + 1), "simultaneous power analyses with", iterations, "sets of tests in each. This may take a few minutes."))
 
     # Create predictors variable #
     dummy_beta <- 0
