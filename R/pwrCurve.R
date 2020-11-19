@@ -179,6 +179,63 @@ pwrCurve <- function(method, min, max, increment = 20, thresholds = c(80, 90, 95
     # let them know it's working
     message(paste("Performing", (max - min) / increment + 1, "simultaneous power analyses with", iterations, "sets of tests in each. This may take a few minutes."))
 
+    # Create predictors variable #
+    dummy_beta <- 0
+
+    if (1 %in% null_effect) {
+      tally_es1 <- "null"
+    } else {tally_es1 <- es1}
+
+    if (2 %in% null_effect) {
+      tally_es2 <- "null"
+    } else {tally_es2 <- es2}
+
+    if (3 %in% null_effect) {
+      tally_es3 <- "null"
+    } else {tally_es3 <- es3}
+
+    if (4 %in% null_effect) {
+      tally_es4 <- "null"
+    } else {tally_es4 <- es4}
+
+    if (5 %in% null_effect) {
+      tally_es5 <- "null"
+    } else {tally_es5 <- es5}
+
+    if (6 %in% null_effect) {
+      tally_es6 <- "null"
+    } else {tally_es6 <- es6}
+
+    if (7 %in% null_effect) {
+      tally_es7 <- "null"
+    } else {tally_es7 <- es7}
+
+    if (8 %in% null_effect) {
+      tally_es8 <- "null"
+    } else {tally_es8 <- es8}
+
+    if (9 %in% null_effect) {
+      tally_es9 <- "null"
+    } else {tally_es9 <- es9}
+
+    if (10 %in% null_effect) {
+      tally_es10 <- "null"
+    } else {tally_es10 <- es10}
+
+    specified_params <- table(c(tally_es1,
+                                tally_es2,
+                                tally_es3,
+                                tally_es4,
+                                tally_es5,
+                                tally_es6,
+                                tally_es7,
+                                tally_es8,
+                                tally_es9,
+                                tally_es10,
+                                dummy_beta))
+
+    predictors <- 11 - specified_params[["0"]]
+
     # run the power analyses #
     for (n in seq(from=min, to=max, by=increment)) {
       data <- rbind(data,
@@ -243,12 +300,69 @@ pwrCurve <- function(method, min, max, increment = 20, thresholds = c(80, 90, 95
       ggplot2::theme_minimal() +
       ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
 
-  } else if (method == "mutliModels") {
+  } else if (method == "pwrMultimodels") {
 
     data <- data.frame()
 
     # let them know it's working
     message(paste("Performing", floor((max - min) / increment + 1), "simultaneous power analyses with", iterations, "sets of tests in each. This may take a few minutes."))
+
+    # Create models variable #
+    dummy_es <- 0
+
+    if (1 %in% null_effect) {
+      tally_es1 <- "null"
+    } else {tally_es1 <- es1}
+
+    if (2 %in% null_effect) {
+      tally_es2 <- "null"
+    } else {tally_es2 <- es2}
+
+    if (3 %in% null_effect) {
+      tally_es3 <- "null"
+    } else {tally_es3 <- es3}
+
+    if (4 %in% null_effect) {
+      tally_es4 <- "null"
+    } else {tally_es4 <- es4}
+
+    if (5 %in% null_effect) {
+      tally_es5 <- "null"
+    } else {tally_es5 <- es5}
+
+    if (6 %in% null_effect) {
+      tally_es6 <- "null"
+    } else {tally_es6 <- es6}
+
+    if (7 %in% null_effect) {
+      tally_es7 <- "null"
+    } else {tally_es7 <- es7}
+
+    if (8 %in% null_effect) {
+      tally_es8 <- "null"
+    } else {tally_es8 <- es8}
+
+    if (9 %in% null_effect) {
+      tally_es9 <- "null"
+    } else {tally_es9 <- es9}
+
+    if (10 %in% null_effect) {
+      tally_es10 <- "null"
+    } else {tally_es10 <- es10}
+
+    specified_models <- table(c(tally_es1,
+                                tally_es2,
+                                tally_es3,
+                                tally_es4,
+                                tally_es5,
+                                tally_es6,
+                                tally_es7,
+                                tally_es8,
+                                tally_es9,
+                                tally_es10,
+                                dummy_es))
+
+    models <- 11 - specified_models[["0"]]
 
     # run the power analyses #
     for (n in seq(from=min, to=max, by=increment)) {
