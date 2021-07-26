@@ -1,6 +1,6 @@
 #' Simulate simultaneous power for multiple tests in a single model
 #'
-#' Simulate power to simultaneously detect predicted effects for a set of statistical tests in a single model with multiple predictors. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable. A detailed walkthrough and set of vignettes for this and other SimulPower functions is available [here](https://doi.org/10.31219/osf.io/w96uk).
+#' Simulate power to simultaneously detect predicted effects for a set of statistical tests in a single model with multiple predictors. This function simulates data based on a correlation matrix imposed using the mvrnorm function from the MASS package (Venables & Ripley, 2002) and can be used to estimate power for models with between 2 and 10 predictor variables and a single dependent variable. A detailed walkthrough and set of vignettes for this and other SimulPower functions is available [here](https://doi.org/10.31219/osf.io/w96uk).
 #'
 #' When you use this function (and we hope you do!), please cite the package:
 #'
@@ -12,14 +12,13 @@
 #'
 #' @usage pwrMultivars(n = NULL, es_units = NULL,
 #' es1 = NULL, es2 = NULL, es3...es10 = 0,
-#' null_effect = 0, popsize = 100000, iterations = 5000,
+#' null_effect = 0, iterations = 5000,
 #' alpha = .05, bonferroni = FALSE, seed = 1,
 #' iv1iv2_cov...iv9iv10_cov = 0)
 #'
-#' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population. This argument has no default.
+#' @param n Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number. This argument has no default.
 #' @param es_units Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for. This argument has no default.
 #' @param null_effect For which, if any, of your predictors are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. If you predict predictor 3 and predictor 4 to have null effects, you should specify null_effect = c(3, 4). Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified. Default = no null effects.
-#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100000.
 #' @param iterations How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 5000.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Accepts any number greater than 0 and less than 1. Default = 0.05.
 #' @param bonferroni Apply a bonferroni correction? This is suggested if you intend on interpreting the results of multiple tests individually, but not if you intend on assessing a single research question by triangulating across multiple tests (Le Forestier, Page-Gould, & Chasteen, Forthcoming). Accepts TRUE or FALSE. Default = FALSE.
@@ -32,11 +31,9 @@
 #'
 #' @author Joel Le Forestier (joel.leforestier@@mail.utoronto.ca)
 #'
-#' @references Fialkowski, A. C. (2018). SimmCorrMix: Simulation of correlated data with multiple variable types including continuous and count mixture distributions. `[`Computer software`]`. Comprehensive R Archive Network (CRAN).
+#' @references Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
 #'
-#' Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psychometrika, 43, 521-532.
-#'
-#' Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
+#' Venables, W. N. & Ripley, B. D. (2002). Modern applied statistics with S. Springer.
 #'
 #' @examples # A basic example, leaving all the defaults in place.
 #'
@@ -45,7 +42,7 @@
 #' # Another example, customizing additional parameters.
 #'
 #' pwrMultivars(n = 300, es_units = "d", es1 = .4, es2 = .04, es3 = .05,
-#'      null_effect = c(2, 3), iv1iv2_cov = .2, popsize = 500000, alpha = .01, seed = 123)
+#'      null_effect = c(2, 3), iv1iv2_cov = .2, alpha = .01, seed = 123)
 #'
 #' @export
 
@@ -60,7 +57,7 @@ pwrMultivars <- function(n, es_units, es1, es2,
                     iv7iv8_cov = 0, iv7iv9_cov = 0, iv7iv10_cov = 0,
                     iv8iv9_cov = 0, iv8iv10_cov = 0,
                     iv9iv10_cov = 0,
-                    null_effect = 0, popsize = 100000, iterations = 5000, alpha = .05, bonferroni = FALSE, seed = 1, print_result = TRUE) {
+                    null_effect = 0, iterations = 5000, alpha = .05, bonferroni = FALSE, seed = 1, print_result = TRUE) {
 
   # Create predictors variable #
   dummy_beta <- 0
@@ -168,11 +165,6 @@ pwrMultivars <- function(n, es_units, es1, es2,
     stop("Please be sure to specify the predictors in order. For example, if you aim to specify four effect sizes, you should assign them to es1, es2, es3, and es4.")
   }
 
-  # Throw a warning if the sample size is greater than or equal to the population size #
-  if(n >= popsize) {
-    stop("Your sample size is greater than or equal to your population size. Please increase popsize or decrease n.")
-  }
-
   # Throw a warning if the number of iterations is 0, negative, or not a whole number #
   if(iterations < 1 | round(iterations, 0) != iterations) {
     stop("You have specified an invalid number of iterations. Please specify a whole number greater than 0.")
@@ -181,11 +173,6 @@ pwrMultivars <- function(n, es_units, es1, es2,
   # Throw a warning if the sample size is 0, negative, or not a whole number #
   if(n < 1 | round(n, 0) != n) {
     stop("You have specified an invalid sample size. Please specify a whole number greater than 0.")
-  }
-
-  # Throw a warning if the population size is 0, negative, or not a whole number #
-  if(popsize < 1 | round(popsize, 0) != popsize) {
-    stop("You have specified an invalid population size. Please specify a whole number greater than 0.")
   }
 
   # Correct effect sizes and throw a warning if es_units is not r, r2, or d #
@@ -233,24 +220,6 @@ pwrMultivars <- function(n, es_units, es1, es2,
     cortable[1:10,11] <- sqrt(cortable[1:10,11])
   }
 
-  # Let the user know it's working #
-  message("Simulating the population.")
-
-  # Simulate the population #
-  invisible(capture.output(dist <- SimCorrMix::corrvar(n = popsize,
-                   k_cont = 11,
-                   method = "Fleishman",
-                   means = rep(0, times = 11),
-                   vars = rep(1, times = 11),
-                   skews = rep(0, times = 11),
-                   skurts = rep(0, times = 11),
-                   rho = cortable,
-                   seed = seed)$Y_cont))
-
-  dist <- data.frame(dist)
-
-  names(dist) <- c("iv1", "iv2", "iv3", "iv4", "iv5", "iv6", "iv7", "iv8", "iv9", "iv10", "dv")
-
   # Set up the model #
   design <- "dv ~ iv1"
   for(v in 2:predictors) {
@@ -275,7 +244,14 @@ pwrMultivars <- function(n, es_units, es1, es2,
   result <- foreach::foreach (i=1:iterations, .combine=rbind) %dopar% {
     set.seed(seed + i)
 
-    sample <- dist[sample(nrow(dist), size = n),]
+    # Simulate the sample #
+    sample <- MASS::mvrnorm(n = n,
+                      mu = rep(0, times = 11),
+                      Sigma = cortable)
+
+    sample <- data.frame(sample)
+    names(sample) <- c("iv1", "iv2", "iv3", "iv4", "iv5", "iv6", "iv7", "iv8", "iv9", "iv10", "dv")
+
     model <- data.frame(summary(lm(design, data = sample))$coefficients)
 
     for(v in 1:predictors){

@@ -16,17 +16,16 @@
 #' increment = 20, thresholds = c(80, 90, 95), es_units = NULL,
 #' es1 = NULL, es2 = NULL, es3...es10 = 0,
 #' iv1iv2_cov...iv9iv10_cov = 0,
-#' null_effect = 0, popsize = 100000, iterations = 1000, alpha = .05,
+#' null_effect = 0, iterations = 1000, alpha = .05,
 #' bonferroni = FALSE, seed = 1, iv1iv2_cov...iv9iv10_cov = 0)
 #'
 #' @param method Specify which SimulPower function you would like to use to computer simultaneous power. Accepts either "pwrMultivars" or "pwrMultimodels". This argument has no default.
-#' @param min Set the minimum sample size for which you would like to estimate simultaneous power. Accepts any positive number smaller than your population and your maximum sample size. This argument has no default.
-#' @param max Set the maximum sample size for which you would like to estimate simultaneous power. Accepts any positive number smaller than your population and larger than your maximum sample size. This argument has no default.
+#' @param min Set the minimum sample size for which you would like to estimate simultaneous power. Accepts any positive number. This argument has no default.
+#' @param max Set the maximum sample size for which you would like to estimate simultaneous power. Accepts any positive number. This argument has no default.
 #' @param increment Set the increments by which you would like the sample size to increase between power analyses. Accepts any positive whole number. Default = 20.
 #' @param thresholds Set the power thresholds for which you would like sample size estimates printed. Accepts either any single number between 0 and 100 or a vector of numbers between 0 and 100. Default = c(80, 90, 95).
 #' @param es_units Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for. This argument has no default.
 #' @param null_effect For which, if any, of your predictors or models are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified. Default = no null effects.
-#' @param popsize What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100000.
 #' @param iterations How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 1000.
 #' @param alpha Set your alpha level. This is the threshold below which p-values will be considered significant. Accepts any number greater than 0 and less than 1. Default = 0.05.
 #' @param bonferroni Apply a bonferroni correction? This is suggested if you intend on interpreting the results of multiple tests individually, but not if you intend on assessing a single research question by triangulating across multiple tests (Le Forestier, Page-Gould, & Chasteen, Forthcoming). Accepts TRUE or FALSE. Default = FALSE.
@@ -98,7 +97,7 @@ pwrCurve <- function(method, min, max, increment = 20, thresholds = c(80, 90, 95
                               iv9dv10_cov = 0,
                               iv10dv9_cov = 0,
 
-                              null_effect = 0, popsize = 100000, iterations = 1000, alpha = .05, bonferroni = FALSE, seed = 1) {
+                              null_effect = 0, iterations = 1000, alpha = .05, bonferroni = FALSE, seed = 1) {
 
   # Throw a warning if method is wrong or missing #
   if(method == "pwrmultivars" |
@@ -141,16 +140,6 @@ pwrCurve <- function(method, min, max, increment = 20, thresholds = c(80, 90, 95
 
   if(method != "pwrMultivars" & method != "pwrMultimodels") {
     stop("You have not correctly specified which SimulPower function you would like to use to estimate simutaneous power.")
-  }
-
-  # Throw a warning if min is greater than or equal to the population size or max size#
-  if(min >= popsize | min >= max) {
-    stop("Your minimum sample size is greater than or equal to either your population size or your maximum sample size. Please adjust popsize, min, or max.")
-  }
-
-  # Throw a warning if max is greater than or equal to the population size or less than or equal to min size#
-  if(max >= popsize | max <= min) {
-    stop("Your maximum sample size is greater than or equal to either your population size or less than or equal to your minimum sample size. Please adjust popsize, min, or max.")
   }
 
   # Throw a warning if the increment is 0, negative, or not a whole number #
@@ -243,7 +232,6 @@ pwrCurve <- function(method, min, max, increment = 20, thresholds = c(80, 90, 95
                       n = n,
                       es_units = es_units,
                       null_effect = null_effect,
-                      popsize = popsize,
                       iterations = iterations,
                       alpha = alpha,
                       seed = seed,
@@ -371,7 +359,6 @@ pwrCurve <- function(method, min, max, increment = 20, thresholds = c(80, 90, 95
                       n = n,
                       es_units = es_units,
                       null_effect = null_effect,
-                      popsize = popsize,
                       iterations = iterations,
                       alpha = alpha,
                       seed = seed,
