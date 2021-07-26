@@ -6,18 +6,16 @@
 \usage{
 pwrMultivars(n = NULL, es_units = NULL,
 es1 = NULL, es2 = NULL, es3...es10 = 0,
-null_effect = 0, popsize = 100000, iterations = 5000,
+null_effect = 0, iterations = 5000,
 alpha = .05, bonferroni = FALSE, seed = 1,
 iv1iv2_cov...iv9iv10_cov = 0)
 }
 \arguments{
-\item{n}{Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number smaller than your population. This argument has no default.}
+\item{n}{Set the size of each sample to be drawn from the population. This is the sample size for which you are estimating statistical power. In other words, setting n to equal 100 will estimate statistical power at n = 100. Accepts any positive number. This argument has no default.}
 
 \item{es_units}{Set the units in which you are specifying your effect sizes. Accepts "d" for Cohen's d, "r" for correlation coefficients, and "r2" for percent of variance accounted for. This argument has no default.}
 
 \item{null_effect}{For which, if any, of your predictors are you computing "null power?" If you want to compute "power" to NOT detect an effect, use this argument to specify which effects are predicted nulls by setting this argument equal to the number(s) corresponding to the predictors you hypothesize to be null. If you predict predictor 3 and predictor 4 to have null effects, you should specify null_effect = c(3, 4). Accepts either a single whole number between 1 and the number of predictors you have specified or a vector of numbers between 1 and the the number of predictors you have specified. Default = no null effects.}
-
-\item{popsize}{What is the size of the population you would like to simulate? This is the population from which you will ultimately draw your samples. Note that the population you simulate does NOT have to be the same size as the real-world population to which you intend to generalize your results, and that simulating very large populations may require more computer memory than is available to some users. Accepts any positive whole number. Default = 100000.}
 
 \item{iterations}{How many times you would like to run your model in random samples drawn from your population? One model will be run in each random sample. Accepts any whole number greater than 0. Default = 5000.}
 
@@ -37,7 +35,7 @@ iv1iv2_cov...iv9iv10_cov = 0)
 A dataframe containing a power estiamte, expressed as a decimal, for each of the effects individually, and for all the effects simultaneously.
 }
 \description{
-Simulate power to simultaneously detect predicted effects for a set of statistical tests in a single model with multiple predictors. This function simulates data based on a correlation matrix imposed using the corrvar function from the SimCorrMix package (Fialkowski, 2018) using Fleishman's third-order polynomial transformation (Fleishman, 1978), and can be used to estimate power for multivariate models with between 2 and 10 predictor variables and a single dependent variable. A detailed walkthrough and set of vignettes for this and other SimulPower functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here}.
+Simulate power to simultaneously detect predicted effects for a set of statistical tests in a single model with multiple predictors. This function simulates data based on a correlation matrix imposed using the mvrnorm function from the MASS package (Venables & Ripley, 2002) and can be used to estimate power for models with between 2 and 10 predictor variables and a single dependent variable. A detailed walkthrough and set of vignettes for this and other SimulPower functions is available \href{https://doi.org/10.31219/osf.io/w96uk}{here}.
 }
 \details{
 When you use this function (and we hope you do!), please cite the package:
@@ -56,15 +54,13 @@ pwrMultivars(n = 150, es_units = "r", es1 = .2, es2 = .15)
 # Another example, customizing additional parameters.
 
 pwrMultivars(n = 300, es_units = "d", es1 = .4, es2 = .04, es3 = .05,
-     null_effect = c(2, 3), iv1iv2_cov = .2, popsize = 500000, alpha = .01, seed = 123)
+     null_effect = c(2, 3), iv1iv2_cov = .2, alpha = .01, seed = 123)
 
 }
 \references{
-Fialkowski, A. C. (2018). SimmCorrMix: Simulation of correlated data with multiple variable types including continuous and count mixture distributions. \code{[}Computer software\verb{]}. Comprehensive R Archive Network (CRAN).
-
-Fleishman, A. I. (1978). A method for simulating non-normal distributions. Psychometrika, 43, 521-532.
-
 Le Forestier, J. M., Page-Gould, E., & Chasteen, A. (Forthcoming). Statistical power for a set of tests.
+
+Venables, W. N. & Ripley, B. D. (2002). Modern applied statistics with S. Springer.
 }
 \author{
 Joel Le Forestier (joel.leforestier@mail.utoronto.ca)
